@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 type Props = {
   onComplete?: () => void;
@@ -15,9 +15,14 @@ export function PennyIntro({ onComplete, forceShow = false }: Props) {
   const prefersReducedMotion = useReducedMotion();
   const [show, setShow] = useState(false);
 
-  const handleComplete = useCallback(() => {
-    onComplete?.();
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
   }, [onComplete]);
+
+  const handleComplete = useCallback(() => {
+    onCompleteRef.current?.();
+  }, []);
 
   // Decide whether to show intro
   useEffect(() => {
@@ -40,9 +45,13 @@ export function PennyIntro({ onComplete, forceShow = false }: Props) {
     if (!show) return;
 
     const delay = prefersReducedMotion ? 400 : INTRO_HOLD_MS;
-    const timer = setTimeout(() => setShow(false), delay);
+    const timer = setTimeout(() => {
+      setShow(false);
+      // Fallback: forcefully complete after animation should have finished
+      setTimeout(handleComplete, 800);
+    }, delay);
     return () => clearTimeout(timer);
-  }, [show, prefersReducedMotion]);
+  }, [show, prefersReducedMotion, handleComplete]);
 
   const letters = "penny".split("");
 

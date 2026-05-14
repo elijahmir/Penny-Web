@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { PennyLogo } from "./PennyLogo";
+import { PhoneScene } from "./3d/PhoneScene";
 
 const words = ["Phone calls,", "handled."];
 
@@ -86,50 +86,13 @@ export function Hero() {
 
           {/* Visual side */}
           <motion.div
-            className="hidden lg:flex items-center justify-center"
+            className="hidden lg:flex items-center justify-center w-full relative z-10"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
           >
-            <div
-              className="relative w-[360px] h-[360px] flex items-center justify-center"
-            >
-              {/* Spinning outer ring */}
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  border: "1px solid rgba(201,129,96,0.12)",
-                }}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-              >
-                <div
-                  className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full"
-                  style={{ background: "var(--copper)" }}
-                />
-              </motion.div>
-
-              {/* Counter-spinning middle ring */}
-              <motion.div
-                className="absolute inset-8 rounded-full"
-                style={{
-                  border: "1px dashed rgba(201,129,96,0.08)",
-                }}
-                animate={{ rotate: -360 }}
-                transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-              />
-
-              {/* Inner glow */}
-              <div
-                className="absolute inset-16 rounded-full"
-                style={{
-                  background:
-                    "radial-gradient(circle, rgba(201,129,96,0.08) 0%, transparent 70%)",
-                }}
-              />
-
-              <PennyLogo size={180} color="var(--copper)" />
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--copper)]/10 to-transparent blur-3xl rounded-full scale-150 pointer-events-none" />
+            <PhoneScene />
           </motion.div>
         </div>
       </div>
