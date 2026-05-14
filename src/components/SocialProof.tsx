@@ -27,11 +27,11 @@ export function SocialProof() {
           className="text-center text-sm md:text-base font-medium tracking-wide"
           style={{ color: "var(--ink-subtle)" }}
         >
-          Already handling real calls for{" "}
+          Already filling units at{" "}
           <span style={{ color: "var(--ink-muted)" }} className="font-semibold">
-            Harcourts Ulverstone &amp; Penguin
+            Harcourts Ulverstone &amp; Penguin Storage
           </span>
-          .
+          {" - Tasmania."}
         </p>
       </motion.div>
 

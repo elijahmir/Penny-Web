@@ -6,32 +6,36 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    q: "Is she an AI or a real person?",
-    a: "Penny is a virtual phone assistant powered by voice AI. She sounds natural, follows your script, and handles calls exactly the way you've trained her. She's not a person, but she gets the job done like one.",
+    q: "What facilities is Penny built for?",
+    a: "Penny is built specifically for self-storage. Single-site operators, multi-site groups, family-owned facilities, owner-operated yards - anywhere from 50 to several hundred units. If you take calls about storage, Penny is for you.",
   },
   {
-    q: "How long does setup take?",
-    a: "Most businesses are up and running inside a week. The setup call takes about an hour; the rest is us building the script and connecting your systems.",
+    q: "Will my customers know they're talking to a virtual assistant?",
+    a: "Penny will say so if they ask directly - but she sounds and acts like a real person, and most callers don't ask. We never pretend Penny is a specific staff member.",
   },
   {
-    q: "What happens if Penny can't handle a call?",
-    a: "She transfers to your team with full context: what was said, what was asked, what was tried. Your people pick up already in the loop.",
+    q: "What if someone needs to speak to me?",
+    a: "Penny transfers the call to you (or whoever you nominate) straight away, with full context. No \"press 1 for service\" menus - just a warm hand-off where your team already knows the situation.",
   },
   {
-    q: "How much does it cost?",
-    a: "Pricing depends on volume and complexity. We'll give you a transparent quote after the discovery call. No lock-in contracts.",
+    q: "How quickly can you get Penny live at my facility?",
+    a: "Most facilities are live within 5–10 business days. We'll need a list of your unit sizes and rates, your gate codes, calendar access, and a chat about how you run a typical day.",
   },
   {
-    q: "Is my data safe?",
-    a: "Yes. Row-level security keeps your data isolated. We don't sell or share anything. Full audit trail on every call.",
+    q: "What does Penny cost?",
+    a: "Pricing scales with the volume of calls Penny handles. We quote based on your facility size and the workflows you want her to run. For most facilities, the math works out to less than one filled unit per month - get in touch and we'll show you the numbers for your operation.",
   },
   {
-    q: "Can I change the script later?",
-    a: "Absolutely. Change it anytime through your dashboard. Most tweaks go live immediately.",
+    q: "What if Penny gets a question she can't answer?",
+    a: "She tells the caller she'll have someone get back to them, captures the question, and notifies you. Over time, she learns the unusual stuff specific to your facility - local landmarks, trailer access, after-hours skip lockouts.",
   },
   {
-    q: "Does she work outside Australia?",
-    a: "Penny can call Australian numbers today. International is on the roadmap. Let us know if you need it and we'll prioritise.",
+    q: "Is my customers' data safe?",
+    a: "Every call is encrypted in transit and at rest. Recordings and transcripts live in your private dashboard. We comply with Australian privacy law and the Privacy Act.",
+  },
+  {
+    q: "Can I hear Penny in action before I commit?",
+    a: "Yes - use the \"Try Penny\" form above. Pick a scenario, drop your number, and Penny will call you within a minute. The whole demo takes about three minutes.",
   },
 ];
 

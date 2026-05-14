@@ -4,17 +4,17 @@ import { useReducedMotion } from "framer-motion";
 
 const phrases = [
   "Answers every call",
-  "Books appointments",
-  "Sends follow-ups",
-  "Captures details",
+  "Rings the waitlist",
+  "Books tours",
+  "Confirms move-ins",
+  "Sends gate codes",
+  "Chases overdue accounts",
+  "Welcomes new customers",
+  "Captures every enquiry",
+  "Transfers to your team",
+  "Reschedules tours",
   "Works 24/7",
-  "Transfers to humans",
-  "Confirms bookings",
-  "Fills cancellations",
-  "Calls your waitlist",
-  "Checks references",
-  "Qualifies leads",
-  "Sends reminders",
+  "Fills empty units",
 ];
 
 export function Marquee({

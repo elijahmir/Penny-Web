@@ -4,66 +4,65 @@ import { motion } from "framer-motion";
 
 const useCases = [
   {
-    tag: "Self-storage",
+    tag: "Waitlist",
     title: "Fill empty units before they cost you a month's rent.",
     story:
-      "A unit opens up. Instead of someone in the office working down a waitlist, Penny rings every name, presents the unit, and books the first taker. Usually before the day is out.",
+      "A unit opens. Within the hour Penny has rung every name on your waitlist in order, presented the unit and the price, and booked the first taker. You wake up to a filled unit and a signed agreement waiting in your inbox.",
     tasks: [
-      "Calls the waitlist",
-      "Presents availability",
+      "Rings the waitlist",
+      "Presents the unit and price",
       "Books on the call",
       "Sends the agreement link",
-      "Logs everything",
+      "Logs every conversation",
     ],
   },
   {
-    tag: "Real estate",
-    title: "Reference checks done overnight, not next week.",
+    tag: "Inbound",
+    title: "Every missed call is money your competitor just earned.",
     story:
-      "A tenancy application comes in. Penny rings the referees, asks the right questions, captures scored answers, and has a clean report on your desk by morning.",
+      "Penny picks up every call you don't, day or night. She finds out what size they need, when they want to move in, and books them in for a tour - or signs them on the spot if a unit's free. You see the result before you've finished your coffee.",
     tasks: [
-      "Contacts referees",
-      "Conducts structured interviews",
-      "Captures responses",
-      "Produces a report",
-      "Flags concerns for review",
+      "Answers 24/7",
+      "Qualifies the enquiry",
+      "Books the tour",
+      "Captures contact details",
+      "Notifies you straight away",
     ],
   },
   {
-    tag: "Trades",
-    title: "Never miss a job call again.",
+    tag: "Tours",
+    title: "Tours that actually happen.",
     story:
-      "You're on a roof. The phone rings. Penny answers, qualifies the job, gives a rough quote, books the site visit, and texts you the details. All while you keep working.",
+      "Penny books the tour, confirms it the day before, and reschedules when life happens. Your prospect arrives expected, the unit's ready, and you spend ten minutes closing instead of two days playing phone tag.",
     tasks: [
-      "Takes inbound calls",
-      "Qualifies the lead",
-      "Books site visits",
-      "Sends quotes",
-      "Notifies you instantly",
+      "Offers real times",
+      "Confirms 24 hours before",
+      "Handles reschedules",
+      "Notifies your on-site team",
     ],
   },
   {
-    tag: "Healthcare & wellness",
-    title: "Reminders that actually reduce no-shows.",
+    tag: "Move-in",
+    title: "A warm welcome that doesn't fall on your shoulders.",
     story:
-      "Day before every appointment, Penny calls to confirm. Patient can confirm, reschedule, or cancel right on the call. Calendar updates itself. Empty slots get refilled from the waitlist.",
+      "Move-in day. Penny rings the new customer, confirms the time, walks them through the gate code, the access hours, and the after-hours contact. You don't get a Saturday text saying \"I can't get in.\"",
     tasks: [
-      "Confirms bookings",
-      "Reschedules on request",
-      "Refills cancellations",
-      "Sends prep instructions",
-      "Reports no-shows",
+      "Confirms move-in time",
+      "Explains gate access",
+      "Sends the agreement",
+      "Triggers the welcome email",
     ],
   },
   {
-    tag: "Anywhere",
-    title: "The repetitive call you do twenty times a week.",
+    tag: "Collections",
+    title: "The phone call you've been putting off - handled.",
     story:
-      "Every business has one: the same call, made or taken, over and over. Survey follow-ups, payment reminders, delivery confirmations, new-customer welcomes. Hand it to Penny once and it's handled forever.",
+      "Day one late, day three, day seven. Penny rings politely, finds out what's going on, takes a payment commitment on the call, and sends the link to settle. The conversation you hate is the one she's best at.",
     tasks: [
-      "Whatever script you give her",
-      "As many calls as you need",
-      "Logged, tracked, reportable",
+      "Calls in the right tone",
+      "Takes payment commitments",
+      "Sends payment links",
+      "Escalates only when needed",
     ],
   },
 ];
@@ -98,12 +97,12 @@ export function UseCases() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <h2 className="text-h2 mb-4">
-            Built for businesses that{" "}
-            <span style={{ color: "var(--copper)" }}>live on the phone</span>
+            What Penny does at{" "}
+            <span style={{ color: "var(--copper)" }}>your facility</span>
           </h2>
           <p className="text-body">
-            Storage, property, trades, clinics, admin. If there's a call to
-            make or take, Penny's got it.
+            From the first enquiry to the move-in to the late payment. Every
+            call in your facility&apos;s customer lifecycle - answered.
           </p>
         </motion.div>
 
@@ -118,7 +117,7 @@ export function UseCases() {
           {useCases.map((uc, i) => (
             <motion.div
               key={uc.title}
-              className={`card ${i === useCases.length - 1 ? "md:col-span-2 md:max-w-[calc(50%-10px)] md:mx-auto" : ""}`}
+              className={`card interactive-card ${i === useCases.length - 1 ? "md:col-span-2 md:max-w-[calc(50%-10px)] md:mx-auto" : ""}`}
               variants={itemVariants}
             >
               <span

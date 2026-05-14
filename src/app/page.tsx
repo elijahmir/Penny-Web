@@ -30,8 +30,8 @@ export default function Home() {
             <Hero />
             <SocialProof />
             <VideoPlaceholder
-              title="See Penny in action"
-              description="A short walkthrough showing how Penny handles a real call, from pickup to follow-up."
+              title="See Penny in action at a real facility"
+              description="A short walkthrough showing how Penny handles a storage enquiry - from the first ring to the booked tour."
             />
             <FeatureGrid />
             <UseCases />

@@ -7,23 +7,23 @@ const steps = [
   {
     number: "01",
     icon: MessageSquareText,
-    title: "Tell us what you want Penny to do.",
+    title: "Tell us how your facility runs.",
     description:
-      "We sit down and map out the calls she'll handle: what to say, what to ask, what to send afterwards, when to bring in a human.",
+      "We sit down with you for an hour and map out the calls you wish you didn't have to make. The waitlist. The tours. The chasers. The new-customer welcomes.",
   },
   {
     number: "02",
     icon: Wrench,
-    title: "We set Penny up with your tools.",
+    title: "We set Penny up with your facility's details.",
     description:
-      "Calendar, contacts, inbox, whatever you're using. Penny learns the script and the systems. Usually inside a week.",
+      "Your unit sizes and rates, your gate codes, your access hours, your calendar, your billing. Penny learns the facility and the way you talk about your customers. Usually live within a week.",
   },
   {
     number: "03",
     icon: Rocket,
-    title: "She gets to work.",
+    title: "She picks up and starts calling.",
     description:
-      "Penny starts taking and making calls. You get a dashboard of every conversation. You tweak as you go.",
+      "Every conversation lands in a dashboard you can read, search, and listen back to. You see what worked, you tweak what didn't, and Penny gets better every week.",
   },
 ];
 
@@ -53,11 +53,11 @@ export function HowItWorks() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <h2 className="text-h2 mb-4">
-            Up and running in{" "}
+            Live at your facility in{" "}
             <span style={{ color: "var(--copper)" }}>days, not months</span>
           </h2>
           <p className="text-body max-w-[480px] mx-auto">
-            Three steps. No jargon. No IT project.
+            Three steps. No jargon. No IT project. No new system for your team to learn.
           </p>
         </motion.div>
 

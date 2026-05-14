@@ -3,54 +3,54 @@
 import { motion } from "framer-motion";
 import {
   Phone,
+  ListChecks,
   CalendarCheck,
-  Mail,
+  CreditCard,
+  KeyRound,
   ClipboardList,
-  UserCheck,
-  Plug,
 } from "lucide-react";
 
 const features = [
   {
     icon: Phone,
-    title: "Always answering, always calling",
+    title: "Picks up at 2am, 6pm, weekends, public holidays",
     description:
-      "24/7 coverage means no missed calls and no after-hours bottleneck. Penny picks up at 2am, books at 6pm, and follows up while you're at lunch.",
+      "Every after-hours enquiry is a real conversation, not a voicemail. The first facility to answer almost always gets the move-in - that's now you, every time.",
     span: "featured", // large card
   },
   {
-    icon: CalendarCheck,
-    title: "Books and confirms appointments",
+    icon: ListChecks,
+    title: "Rings the waitlist the moment a unit opens",
     description:
-      "Penny checks your calendar, offers real times, and locks in the booking on the call. Confirmations go out by email or SMS automatically.",
+      "No more working down the list by hand. The minute a unit clears, Penny rings every name in order, presents the unit, and locks in the first taker. Usually the same day.",
     span: "normal",
   },
   {
-    icon: Mail,
-    title: "Sends emails and SMS",
+    icon: CalendarCheck,
+    title: "Books tours and confirms move-ins",
     description:
-      "The right message to the right person at the right time: receipts, reminders, paperwork links, follow-up notes. Already drafted, already sent.",
+      "Penny offers real times against your calendar, locks in the tour on the call, and sends the confirmation by email or text. The customer arrives expected and ready.",
+    span: "normal",
+  },
+  {
+    icon: CreditCard,
+    title: "Chases overdue accounts - politely, persistently",
+    description:
+      "The phone call no one wants to make. Penny does it on day one, day three, day seven - warmly, never accusatory, always clear about what's owed and what happens next.",
+    span: "normal",
+  },
+  {
+    icon: KeyRound,
+    title: "Welcomes new customers and explains access",
+    description:
+      "Gate codes, access hours, after-hours contact, agreement signing. Penny walks every new customer through it so they don't ring you on Saturday asking how to get in.",
     span: "normal",
   },
   {
     icon: ClipboardList,
-    title: "Captures the right details, every time",
+    title: "Logs every conversation in one place",
     description:
-      "Names, addresses, preferences, structured information. All recorded accurately and stored in one place you can search and review.",
-    span: "normal",
-  },
-  {
-    icon: UserCheck,
-    title: "Hands off to a human when it matters",
-    description:
-      "If the call needs a real person, Penny transfers warmly with full context. Your team picks up already knowing the situation.",
-    span: "normal",
-  },
-  {
-    icon: Plug,
-    title: "Plugs into the tools you already use",
-    description:
-      "Calendars, CRMs, inboxes, documents, payment links. Penny works with what you've got. No replatforming, no migration project.",
+      "Names, sizes asked about, move-in dates, payment commitments, complaints - every call written down in a dashboard you can search. No more \"did anyone follow up with Mark from Wynyard?\"",
     span: "featured", // large card
   },
 ];
@@ -85,12 +85,12 @@ export function FeatureGrid() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <h2 className="text-h2 mb-4">
-            Everything she does, done{" "}
-            <span style={{ color: "var(--copper)" }}>well</span>
+            Built for the way a storage facility{" "}
+            <span style={{ color: "var(--copper)" }}>actually runs</span>
           </h2>
           <p className="text-body">
-            Six things Penny handles every day, without a single complaint,
-            sick day, or dropped call.
+            Six things Penny does at your facility every day - without a
+            single missed call, late arrival, or unfilled unit.
           </p>
         </motion.div>
 
@@ -108,7 +108,7 @@ export function FeatureGrid() {
             return (
               <motion.div
                 key={feature.title}
-                className={`group cursor-default ${
+                className={`group cursor-default interactive-card ${
                   isFeatured
                     ? "card-featured lg:col-span-2"
                     : "card"

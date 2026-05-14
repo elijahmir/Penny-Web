@@ -35,7 +35,7 @@ export function FinalCTA() {
             className="text-body text-lg max-w-[480px] mx-auto mb-8"
             style={{ color: "rgba(247,247,242,0.65)" }}
           >
-            Hear Penny handle a real scenario in 30 seconds, or get in touch
+            Hear Penny handle a real scenario in 2 minutes, or get in touch
             and tell us what you need.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

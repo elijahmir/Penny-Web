@@ -15,6 +15,7 @@
     "@react-three/fiber": "^9.6.1",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.12.92",
+    "@supabase/supabase-js": "^2.105.4",
     "@types/three": "^0.184.1",
     "framer-motion": "^12.38.0",
     "libphonenumber-js": "^1.13.1",
@@ -27,12 +28,14 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "playwright": "^1.60.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

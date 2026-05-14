@@ -1,28 +1,28 @@
 export const scenarios = [
   {
     id: "storage_waitlist",
-    label: "🏢 Storage waitlist: a unit just opened up",
-    short: "Storage Waitlist",
+    label: "🏢 A unit just opened up - Penny rings the waitlist",
+    short: "Waitlist Callback",
   },
   {
-    id: "property_inquiry",
-    label: "🏠 Property inquiry callback: following up on a listing",
-    short: "Property Inquiry",
+    id: "inquiry_callback",
+    label: "📞 A missed enquiry - Penny calls back to qualify and book a tour",
+    short: "Enquiry Callback",
   },
   {
-    id: "appointment_reminder",
-    label: "📅 Appointment reminder: confirming tomorrow's booking",
-    short: "Appointment Reminder",
+    id: "tour_booking",
+    label: "📅 Tour booking - Penny locks in a viewing time",
+    short: "Tour Booking",
   },
   {
-    id: "reference_check",
-    label: "✅ Reference check: referee interview",
-    short: "Reference Check",
+    id: "move_in_welcome",
+    label: "🎉 New customer move-in - Penny welcomes them and explains access",
+    short: "Move-in Welcome",
   },
   {
-    id: "service_callback",
-    label: "🛠 Service callback: quoting a job",
-    short: "Service Callback",
+    id: "overdue_payment",
+    label: "💳 Overdue account - Penny chases politely and takes a payment commitment",
+    short: "Overdue Account",
   },
 ] as const;
 
