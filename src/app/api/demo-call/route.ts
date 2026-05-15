@@ -64,8 +64,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    /* ── 2. CAPTCHA verification ────────────────────── */
-    if (captchaToken) {
+    /* ── 2. CAPTCHA verification (MANDATORY) ─────────── */
+    if (TURNSTILE_SECRET) {
+      if (!captchaToken) {
+        return NextResponse.json(
+          { error: "Please complete the security check.", code: "captcha_missing" },
+          { status: 400 }
+        );
+      }
       const captchaOk = await verifyCaptcha(captchaToken, ip);
       if (!captchaOk) {
         return NextResponse.json(

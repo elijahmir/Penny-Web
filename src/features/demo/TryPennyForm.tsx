@@ -23,6 +23,7 @@ export function TryPennyForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const captchaTokenRef = useRef<string>("");
+  const [captchaReady, setCaptchaReady] = useState(!TURNSTILE_SITE_KEY);
 
   const handleScenarioSelect = useCallback((id: ScenarioId) => {
     setSelectedScenario(id);
@@ -83,6 +84,7 @@ export function TryPennyForm() {
     setErrorMessage("");
     setSuccessMessage("");
     captchaTokenRef.current = "";
+    setCaptchaReady(!TURNSTILE_SITE_KEY);
   }, []);
 
   const selectedScenarioData = scenarios.find((s) => s.id === selectedScenario);
@@ -237,6 +239,15 @@ export function TryPennyForm() {
                           siteKey={TURNSTILE_SITE_KEY}
                           onSuccess={(token: string) => {
                             captchaTokenRef.current = token;
+                            setCaptchaReady(true);
+                          }}
+                          onExpire={() => {
+                            captchaTokenRef.current = "";
+                            setCaptchaReady(false);
+                          }}
+                          onError={() => {
+                            captchaTokenRef.current = "";
+                            setCaptchaReady(false);
                           }}
                           options={{ theme: "light", size: "compact" }}
                         />
@@ -262,7 +273,7 @@ export function TryPennyForm() {
                       type="submit"
                       className={styles.submitButton}
                       disabled={
-                        formState === "submitting" || !name.trim() || !phone.trim()
+                        formState === "submitting" || !name.trim() || !phone.trim() || !captchaReady
                       }
                     >
                       {formState === "submitting" ? (

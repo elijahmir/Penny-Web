@@ -53,7 +53,27 @@ export function Model({ children, ...props }: React.PropsWithChildren<React.Comp
       materials.screen_display.metalness = 0.8;
     }
 
-  }, [materials]);
+    // DEBUG: measure body + screen bboxes so we can calibrate centering
+    const logBBox = (name: string, mesh: THREE.Mesh | undefined) => {
+      if (!mesh) return
+      mesh.geometry.computeBoundingBox()
+      const bb = mesh.geometry.boundingBox!
+      const center = new THREE.Vector3()
+      bb.getCenter(center)
+      const size = new THREE.Vector3()
+      bb.getSize(size)
+      // eslint-disable-next-line no-console
+      console.log(`[BBOX:${name}]`, JSON.stringify({
+        min: { x: bb.min.x.toFixed(5), y: bb.min.y.toFixed(5), z: bb.min.z.toFixed(5) },
+        max: { x: bb.max.x.toFixed(5), y: bb.max.y.toFixed(5), z: bb.max.z.toFixed(5) },
+        center: { x: center.x.toFixed(5), y: center.y.toFixed(5), z: center.z.toFixed(5) },
+        size: { x: size.x.toFixed(5), y: size.y.toFixed(5), z: size.z.toFixed(5) },
+      }))
+    }
+    logBBox('screen', nodes.screen)
+    logBBox('body_Plane', nodes.Plane)
+    logBBox('back_Plane_1', nodes.Plane_1)
+  }, [materials, nodes]);
 
   return (
     <group {...props} dispose={null}>
