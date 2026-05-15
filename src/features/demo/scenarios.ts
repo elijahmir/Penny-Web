@@ -19,7 +19,7 @@ export const scenarios = [
     short: "Tour Booking",
     emoji: "📅",
     description: "A prospect wants to see the facility. Penny arranges the visit.",
-    inProgress: true,
+
   },
   {
     id: "move_in_welcome",
@@ -27,7 +27,7 @@ export const scenarios = [
     short: "Move-in Welcome",
     emoji: "🎉",
     description: "A new tenant just signed up. Penny welcomes them with gate codes.",
-    inProgress: true,
+
   },
   {
     id: "overdue_payment",
@@ -35,7 +35,7 @@ export const scenarios = [
     short: "Overdue Account",
     emoji: "💳",
     description: "A payment is a few days late. Penny gives a warm courtesy call.",
-    inProgress: true,
+
   },
 ] as const;
 

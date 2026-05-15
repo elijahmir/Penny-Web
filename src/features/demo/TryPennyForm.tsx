@@ -149,34 +149,23 @@ export function TryPennyForm() {
                 >
                   <p className={styles.stepLabel}>Pick a scenario</p>
                   <div className={styles.scenarioGrid}>
-                    {scenarios.map((s) => {
-                      const inProgress = "inProgress" in s && s.inProgress;
-                      return (
+                    {scenarios.map((s) => (
                         <button
                           key={s.id}
                           type="button"
                           className={`${styles.scenarioCard} ${
                             selectedScenario === s.id ? styles.scenarioCardSelected : ""
-                          } ${inProgress ? styles.scenarioCardDisabled : ""}`}
-                          onClick={() => {
-                            if (!inProgress) handleScenarioSelect(s.id);
-                          }}
-                          disabled={inProgress}
+                          }`}
+                          onClick={() => handleScenarioSelect(s.id)}
                         >
                           <span className={styles.scenarioEmoji}>{s.emoji}</span>
                           <span className={styles.scenarioLabel}>
                             {s.short}
-                            {inProgress && (
-                              <span className={styles.inProgressBadge}>In progress</span>
-                            )}
                           </span>
                           <span className={styles.scenarioDescription}>{s.description}</span>
-                          {!inProgress && (
-                            <ArrowRight className={styles.scenarioArrow} size={14} />
-                          )}
+                          <ArrowRight className={styles.scenarioArrow} size={14} />
                         </button>
-                      );
-                    })}
+                    ))}
                   </div>
                 </motion.div>
               )}

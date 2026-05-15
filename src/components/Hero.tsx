@@ -5,7 +5,7 @@ import { PhoneScene } from "./3d/PhoneScene";
 import { PennyLogo } from "./PennyLogo";
 
 // Set this to true to enable the 3D phone interaction, or false to use the animated logo fallback.
-const USE_3D_PHONE = false;
+const USE_3D_PHONE = true;
 
 const words = ["Every enquiry answered.", "Every unit filled."];
 
@@ -92,11 +92,15 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Visual side */}
+          {/* Visual side — NOTE: do not add `scale` or any other transform-based
+              animation here. drei's <Html transform> projects from 3D to screen
+              space via CSS3D, and a persistent CSS `transform` on this parent
+              causes the Html overlay to drift diagonally on scroll. Opacity-only
+              entrance is safe. */}
           <motion.div
             className="flex items-center justify-center w-full relative z-10"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
           >
             {USE_3D_PHONE ? (
