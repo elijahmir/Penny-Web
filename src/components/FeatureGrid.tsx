@@ -102,7 +102,7 @@ export function FeatureGrid() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
         >
-          {features.map((feature, i) => {
+          {features.map((feature) => {
             const Icon = feature.icon;
             const isFeatured = feature.span === "featured";
             return (

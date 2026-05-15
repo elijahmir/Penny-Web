@@ -14,6 +14,11 @@ const DAILY_CAP = parseInt(process.env.DEMO_DAILY_CALL_CAP || "50", 10);
 
 const VALID_SCENARIOS = new Set<string>(Object.keys(SCENARIO_AGENT_MAP));
 
+/** Simple email format check (matches frontend) */
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
+}
+
 /**
  * Verify Cloudflare Turnstile CAPTCHA token.
  */
@@ -42,10 +47,13 @@ export async function POST(request: NextRequest) {
       "unknown";
 
     const body = await request.json();
-    const { name, phone, scenario, captchaToken } = body as {
+    const { name, email, phone, countryCode, scenario, marketingConsent, captchaToken } = body as {
       name: string;
+      email: string;
       phone: string;
+      countryCode: string;
       scenario: string;
+      marketingConsent: boolean;
       captchaToken: string;
     };
 
@@ -57,9 +65,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!email || typeof email !== "string" || !isValidEmail(email.trim())) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address.", code: "invalid_email" },
+        { status: 400 }
+      );
+    }
+
     if (!scenario || !VALID_SCENARIOS.has(scenario)) {
       return NextResponse.json(
         { error: "Please select a demo scenario.", code: "invalid_scenario" },
+        { status: 400 }
+      );
+    }
+
+    if (!countryCode || typeof countryCode !== "string" || countryCode.length !== 2) {
+      return NextResponse.json(
+        { error: "Please select a country code.", code: "invalid_country" },
         { status: 400 }
       );
     }
@@ -82,7 +104,7 @@ export async function POST(request: NextRequest) {
     }
 
     /* ── 3. Phone validation ────────────────────────── */
-    const phoneResult = validatePhone(phone);
+    const phoneResult = validatePhone(phone, countryCode);
     if (!phoneResult.valid || !phoneResult.e164) {
       return NextResponse.json(
         { error: phoneResult.error || "Invalid phone number.", code: "invalid_phone" },
@@ -148,10 +170,12 @@ export async function POST(request: NextRequest) {
       .from("penny_demo_calls")
       .insert({
         name: name.trim(),
+        email: email.trim(),
         phone: phoneResult.e164,
         scenario: scenario as ScenarioId,
         status: "initiating",
         ip_address: ip,
+        marketing_consent: Boolean(marketingConsent),
       })
       .select("id")
       .single();
@@ -170,6 +194,7 @@ export async function POST(request: NextRequest) {
       override_agent_id: agentId,
       retell_llm_dynamic_variables: {
         caller_name: name.trim(),
+        caller_email: email.trim(),
         demo_call_id: dbRow?.id || "",
       },
     };

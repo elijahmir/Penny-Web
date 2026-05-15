@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, CheckCircle, AlertCircle, Loader2, ArrowRight, RotateCcw } from "lucide-react";
+import { Phone, CheckCircle, AlertCircle, Loader2, ArrowRight, RotateCcw, ChevronDown, Mail, Shield } from "lucide-react";
 import { scenarios, type ScenarioId } from "./scenarios";
+import { getOrderedCountries, findCountryByIso, DEFAULT_COUNTRY_ISO, type CountryCode } from "./country-codes";
 import { Turnstile } from "@marsidev/react-turnstile";
 import styles from "./TryPennyForm.module.css";
 
@@ -14,16 +15,63 @@ type FormState = "idle" | "submitting" | "success" | "error";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
 
+const DEMO_TERMS_BODY = `Penny AI — Demo Terms & Conditions
+
+Demo Nature
+This is a demonstration of Penny AI's voice assistant capabilities. The call simulates real-world storage service scenarios and does not constitute a service agreement, quote, or binding commitment.
+
+Recording & Quality
+This demo call will be recorded for quality assurance, product improvement, and training purposes.
+
+Your Information
+We collect your name, email address, and phone number to:
+• Deliver this demo call experience
+• Improve our product and service quality
+• Contact you regarding our services (only if you opt in separately)
+
+Data Handling
+Your information is stored securely on encrypted servers and will never be sold to third parties. Demo call data is retained for up to 90 days, after which it is automatically deleted unless you become a customer.
+
+Call Duration
+Demo calls are limited to approximately 2 minutes.`;
+
+/** Simple email validation */
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
+}
+
 export function TryPennyForm() {
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedScenario, setSelectedScenario] = useState<ScenarioId | null>(null);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [countryIso, setCountryIso] = useState(DEFAULT_COUNTRY_ISO);
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  const [countrySearch, setCountrySearch] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsExpanded, setTermsExpanded] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const [formState, setFormState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const captchaTokenRef = useRef<string>("");
   const [captchaReady, setCaptchaReady] = useState(!TURNSTILE_SITE_KEY);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const countries = useMemo(() => getOrderedCountries(), []);
+  const selectedCountry = useMemo(() => findCountryByIso(countryIso), [countryIso]);
+
+  const filteredCountries = useMemo(() => {
+    if (!countrySearch.trim()) return countries;
+    const q = countrySearch.toLowerCase();
+    return countries.filter(
+      (c) =>
+        c.name.toLowerCase().includes(q) ||
+        c.dial.includes(q) ||
+        c.iso.toLowerCase().includes(q)
+    );
+  }, [countries, countrySearch]);
 
   const handleScenarioSelect = useCallback((id: ScenarioId) => {
     setSelectedScenario(id);
@@ -36,11 +84,24 @@ export function TryPennyForm() {
     setErrorMessage("");
   }, []);
 
+  const handleCountrySelect = useCallback((country: CountryCode) => {
+    setCountryIso(country.iso);
+    setCountryDropdownOpen(false);
+    setCountrySearch("");
+  }, []);
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      if (!selectedScenario || !name.trim() || !phone.trim()) return;
+      if (!selectedScenario || !name.trim() || !email.trim() || !phone.trim() || !termsAccepted)
+        return;
+
+      if (!isValidEmail(email.trim())) {
+        setFormState("error");
+        setErrorMessage("Please enter a valid email address.");
+        return;
+      }
 
       setFormState("submitting");
       setErrorMessage("");
@@ -51,8 +112,11 @@ export function TryPennyForm() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: name.trim(),
+            email: email.trim(),
             phone: phone.trim(),
+            countryCode: countryIso,
             scenario: selectedScenario,
+            marketingConsent,
             captchaToken: captchaTokenRef.current,
           }),
         });
@@ -72,14 +136,19 @@ export function TryPennyForm() {
         setErrorMessage("Network error. Please check your connection and try again.");
       }
     },
-    [selectedScenario, name, phone]
+    [selectedScenario, name, email, phone, countryIso, termsAccepted, marketingConsent]
   );
 
   const handleReset = useCallback(() => {
     setStep(1);
     setSelectedScenario(null);
     setName("");
+    setEmail("");
     setPhone("");
+    setCountryIso(DEFAULT_COUNTRY_ISO);
+    setTermsAccepted(false);
+    setTermsExpanded(false);
+    setMarketingConsent(false);
     setFormState("idle");
     setErrorMessage("");
     setSuccessMessage("");
@@ -88,6 +157,15 @@ export function TryPennyForm() {
   }, []);
 
   const selectedScenarioData = scenarios.find((s) => s.id === selectedScenario);
+
+  const isSubmitDisabled =
+    formState === "submitting" ||
+    !name.trim() ||
+    !email.trim() ||
+    !isValidEmail(email.trim()) ||
+    !phone.trim() ||
+    !termsAccepted ||
+    !captchaReady;
 
   return (
     <div className={styles.container}>
@@ -172,7 +250,7 @@ export function TryPennyForm() {
                 </motion.div>
               )}
 
-              {/* ─── STEP 2: NAME + PHONE ─── */}
+              {/* ─── STEP 2: DETAILS ─── */}
               {step === 2 && (
                 <motion.div
                   key="step2"
@@ -193,6 +271,7 @@ export function TryPennyForm() {
                   )}
 
                   <form onSubmit={handleSubmit} className={styles.form}>
+                    {/* Name */}
                     <div className={styles.inputGroup}>
                       <label htmlFor="demo-name" className={styles.label}>
                         First name
@@ -212,27 +291,189 @@ export function TryPennyForm() {
                       />
                     </div>
 
+                    {/* Email */}
                     <div className={styles.inputGroup}>
-                      <label htmlFor="demo-phone" className={styles.label}>
-                        Australian mobile number
+                      <label htmlFor="demo-email" className={styles.label}>
+                        <Mail size={13} className={styles.labelIcon} />
+                        Email address
                       </label>
                       <input
-                        id="demo-phone"
-                        type="tel"
+                        id="demo-email"
+                        type="email"
                         className={styles.input}
-                        placeholder="04XX XXX XXX"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="you@company.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
-                        autoComplete="tel"
+                        maxLength={254}
+                        autoComplete="email"
                         disabled={formState === "submitting"}
                       />
+                    </div>
+
+                    {/* Phone with country code */}
+                    <div className={styles.inputGroup}>
+                      <label htmlFor="demo-phone" className={styles.label}>
+                        <Phone size={13} className={styles.labelIcon} />
+                        Phone number
+                      </label>
+                      <div className={styles.phoneRow}>
+                        {/* Country Code Dropdown */}
+                        <div className={styles.countryDropdownWrapper} ref={dropdownRef}>
+                          <button
+                            type="button"
+                            className={styles.countryTrigger}
+                            onClick={() => setCountryDropdownOpen(!countryDropdownOpen)}
+                            disabled={formState === "submitting"}
+                            aria-label="Select country code"
+                            aria-expanded={countryDropdownOpen}
+                          >
+                            <span className={styles.countryFlag}>
+                              {selectedCountry?.flag || "🌍"}
+                            </span>
+                            <span className={styles.countryDial}>
+                              {selectedCountry?.dial || "+61"}
+                            </span>
+                            <ChevronDown
+                              size={14}
+                              className={`${styles.countryChevron} ${
+                                countryDropdownOpen ? styles.countryChevronOpen : ""
+                              }`}
+                            />
+                          </button>
+
+                          <AnimatePresence>
+                            {countryDropdownOpen && (
+                              <motion.div
+                                className={styles.countryDropdown}
+                                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                                transition={{ duration: 0.2, ease: EMIL_EASE_OUT }}
+                              >
+                                <input
+                                  type="text"
+                                  className={styles.countrySearchInput}
+                                  placeholder="Search country..."
+                                  value={countrySearch}
+                                  onChange={(e) => setCountrySearch(e.target.value)}
+                                  autoFocus
+                                />
+                                <div className={styles.countryList}>
+                                  {filteredCountries.length === 0 && (
+                                    <div className={styles.countryEmpty}>No results</div>
+                                  )}
+                                  {filteredCountries.map((c, i) => {
+                                    // Show separator after priority countries
+                                    const showSep = i === 5 && !countrySearch.trim();
+                                    return (
+                                      <div key={`${c.iso}-${c.dial}`}>
+                                        {showSep && <div className={styles.countrySeparator} />}
+                                        <button
+                                          type="button"
+                                          className={`${styles.countryOption} ${
+                                            c.iso === countryIso ? styles.countryOptionActive : ""
+                                          }`}
+                                          onClick={() => handleCountrySelect(c)}
+                                        >
+                                          <span className={styles.countryOptionFlag}>{c.flag}</span>
+                                          <span className={styles.countryOptionName}>{c.name}</span>
+                                          <span className={styles.countryOptionDial}>{c.dial}</span>
+                                        </button>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
+                        {/* Phone Input */}
+                        <input
+                          id="demo-phone"
+                          type="tel"
+                          className={`${styles.input} ${styles.phoneInput}`}
+                          placeholder={selectedCountry?.example || "Phone number"}
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          required
+                          autoComplete="tel-national"
+                          disabled={formState === "submitting"}
+                          onFocus={() => setCountryDropdownOpen(false)}
+                        />
+                      </div>
                       <span className={styles.inputHint}>
                         Penny will call this number in about 15 seconds.
                       </span>
                     </div>
 
-                    {/* CAPTCHA - rendered invisibly */}
+                    {/* ─── Terms & Conditions ─── */}
+                    <div className={styles.termsSection}>
+                      <label className={styles.checkboxRow}>
+                        <input
+                          type="checkbox"
+                          className={styles.checkbox}
+                          checked={termsAccepted}
+                          onChange={(e) => setTermsAccepted(e.target.checked)}
+                          disabled={formState === "submitting"}
+                        />
+                        <span className={styles.checkboxLabel}>
+                          I agree to the{" "}
+                          <button
+                            type="button"
+                            className={styles.termsToggle}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setTermsExpanded(!termsExpanded);
+                            }}
+                          >
+                            Demo Terms
+                          </button>
+                        </span>
+                      </label>
+
+                      <AnimatePresence>
+                        {termsExpanded && (
+                          <motion.div
+                            className={styles.termsAccordion}
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3, ease: EMIL_EASE_OUT }}
+                          >
+                            <div className={styles.termsContent}>
+                              <Shield size={14} className={styles.termsShieldIcon} />
+                              <pre className={styles.termsText}>{DEMO_TERMS_BODY}</pre>
+                              <p className={styles.termsRightsText}>
+                                <strong>Your Rights</strong><br />
+                                You may request access to, correction of, or deletion of your personal data at any time by{" "}
+                                <a href="#contact" className={styles.termsContactLink}>contacting us</a>.
+                                We comply with the Australian Privacy Act 1988 and applicable international privacy regulations.
+                              </p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Optional: Marketing consent */}
+                      <label className={`${styles.checkboxRow} ${styles.marketingRow}`}>
+                        <input
+                          type="checkbox"
+                          className={styles.checkbox}
+                          checked={marketingConsent}
+                          onChange={(e) => setMarketingConsent(e.target.checked)}
+                          disabled={formState === "submitting"}
+                        />
+                        <span className={styles.checkboxLabelOptional}>
+                          I&apos;d like to hear from the Penny team about how AI voice agents can
+                          help my business{" "}
+                          <span className={styles.optionalTag}>(optional)</span>
+                        </span>
+                      </label>
+                    </div>
+
+                    {/* CAPTCHA */}
                     {TURNSTILE_SITE_KEY && (
                       <div className={styles.captchaWrapper}>
                         <Turnstile
@@ -272,9 +513,7 @@ export function TryPennyForm() {
                     <button
                       type="submit"
                       className={styles.submitButton}
-                      disabled={
-                        formState === "submitting" || !name.trim() || !phone.trim() || !captchaReady
-                      }
+                      disabled={isSubmitDisabled}
                     >
                       {formState === "submitting" ? (
                         <>
@@ -288,11 +527,6 @@ export function TryPennyForm() {
                         </>
                       )}
                     </button>
-
-                    <p className={styles.disclaimer}>
-                      By submitting, you agree to receive one demo call (max 2 min) from Penny.
-                      Your number won&apos;t be stored for marketing.
-                    </p>
                   </form>
                 </motion.div>
               )}

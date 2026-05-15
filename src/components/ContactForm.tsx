@@ -83,9 +83,10 @@ export function ContactForm() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="text-h2 mb-3">Get in touch</h2>
+            <h2 className="text-h2 mb-3">Talk to us</h2>
             <p className="text-body">
-              Want a custom setup? Have a question? Drop us a line. We respond within a business day.
+              Questions about Penny, need a custom setup, or have a data request?{" "}
+              We&apos;re here to help and respond within one business day.
             </p>
           </motion.div>
 
@@ -222,12 +223,12 @@ export function ContactForm() {
                       className="block text-sm font-semibold mb-1.5"
                       style={{ color: "var(--ink)" }}
                     >
-                      Tell us about your business
+                      How can we help?
                     </label>
                     <textarea
                       id="contact-message"
                       rows={4}
-                      placeholder="What kind of calls would Penny handle for you?"
+                      placeholder="Questions, custom setup, data requests — tell us what you need."
                       {...register("message")}
                       className="w-full px-4 py-3 rounded-lg border text-sm outline-none resize-none"
                       style={{

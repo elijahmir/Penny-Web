@@ -92,11 +92,8 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Visual side — NOTE: do not add `scale` or any other transform-based
-              animation here. drei's <Html transform> projects from 3D to screen
-              space via CSS3D, and a persistent CSS `transform` on this parent
-              causes the Html overlay to drift diagonally on scroll. Opacity-only
-              entrance is safe. */}
+          {/* Visual side. Opacity-only entrance keeps the 3D phone composition
+              stable while the screen UI renders directly as a WebGL texture. */}
           <motion.div
             className="flex items-center justify-center w-full relative z-10"
             initial={{ opacity: 0 }}

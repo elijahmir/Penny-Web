@@ -13,7 +13,11 @@ const INTRO_HOLD_MS = 2200; // time to show full intro before exit
 
 export function PennyIntro({ onComplete, forceShow = false }: Props) {
   const prefersReducedMotion = useReducedMotion();
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(() => {
+    if (forceShow) return true;
+    if (typeof window === "undefined") return false;
+    return !sessionStorage.getItem(SESSION_KEY);
+  });
 
   const onCompleteRef = useRef(onComplete);
   useEffect(() => {
@@ -24,21 +28,15 @@ export function PennyIntro({ onComplete, forceShow = false }: Props) {
     onCompleteRef.current?.();
   }, []);
 
-  // Decide whether to show intro
+  // Persist session flag + handle already-seen path
   useEffect(() => {
-    if (forceShow) {
-      setShow(true);
-      return;
-    }
-    const seen = sessionStorage.getItem(SESSION_KEY);
-    if (!seen) {
-      setShow(true);
+    if (show && !forceShow) {
       sessionStorage.setItem(SESSION_KEY, "1");
-    } else {
-      // Already seen: skip intro entirely
+    }
+    if (!show) {
       handleComplete();
     }
-  }, [forceShow, handleComplete]);
+  }, [show, forceShow, handleComplete]);
 
   // Auto-dismiss after hold duration
   useEffect(() => {

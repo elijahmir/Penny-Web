@@ -58,7 +58,7 @@ export function FinalCTA() {
                 border: "1px solid rgba(247,247,242,0.2)",
               }}
             >
-              Get in touch
+              Talk to us
             </a>
           </div>
         </motion.div>
