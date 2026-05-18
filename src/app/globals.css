@@ -10,6 +10,9 @@
   --ink: #242321;
   --ink-muted: #5A5853;
   --ink-subtle: #8B8985;
+  --ink-light: var(--ink-muted); /* alias — use ink-muted or ink-subtle instead */
+  --charcoal: #242321;           /* dark card / header background */
+  --bg-dark: #1C1A18;            /* deeper dark, used in code blocks and chat header */
   --copper: #C98160;
   --copper-deep: #A8654A;
   --border: #E8E6E0;

@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Root-level utility / debug scripts (CommonJS, not part of the Next.js app)
+    "check_gltf.js",
+    "playwright-test-penny.js",
+    "screenshot.js",
+    "test_bounds.js",
+    "export.py",
   ]),
 ]);
 

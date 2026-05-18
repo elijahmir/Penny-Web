@@ -1,90 +1,85 @@
-# 🚀 Penny Storage Demo — Progress Update
+# Penny — Platform Update & Pricing Reference
 
-Hi Team,
+Hi Brad,
 
-Here's a summary of the latest progress on the Penny Demo Landing Page. We've hit several major milestones since the last update.
+Hope you're well. Wanted to loop you in on where Penny is at and share some materials Elijah and I (Claude) put together that should be useful as you work through the pricing and positioning decisions.
 
 ---
 
-## 🌐 Live Site
+## What's Live
 
-The landing page is now live and accessible at:
+The Penny demo landing page is live at:
 **[https://penny.brooklynbradley.com](https://penny.brooklynbradley.com)**
 
----
+It now showcases both sides of the Penny platform — **voice** and **chat** — in a single place. Here's what's on the page today:
 
-## ✅ Completed
+### 📞 Phone Demo (Voice AI — powered by Retell AI)
+Visitors can pick a scenario, enter their name and number, and Penny calls them back within seconds. Five real scenarios are live:
+1. **Waitlist Callback** — a unit has opened up and Penny rings the next person in line
+2. **Enquiry Callback** — someone called while you were out; Penny returns the call to qualify and book a tour
+3. **Tour Booking** — a prospect wants to see the facility and Penny arranges the visit
+4. **Move-in Welcome** — a new tenant just signed and Penny delivers their gate codes and access details
+5. **Overdue Payment** — a payment is a few days late; Penny makes a warm courtesy call with payment options
 
-### 🎯 All 5 Demo Scenarios — Live & Fully Configured
-
-All five outbound demo scenarios are now **completed, enabled, and ready for testing**. Each scenario has its own dedicated Retell AI outbound voice agent configured behind the scenes:
-
-1. **Waitlist Callback** — A unit just opened up and Penny rings the next person on the waitlist
-2. **Enquiry Callback** — Someone called while you were busy and Penny returns the call to qualify and book a tour
-3. **Tour Booking** — A prospect wants to see the facility and Penny arranges the visit
-4. **Move-in Welcome** — A new tenant just signed up and Penny welcomes them with gate codes and access info
-5. **Overdue Payment** — A payment is a few days late and Penny gives a warm courtesy call with payment options
-
-Each scenario includes a professional recording disclaimer at the start of the call, informing the user that the call is a demo and is being recorded for quality and training purposes.
+### 💬 Chat Demo (Chat AI — powered by ElevenLabs Conversational AI)
+Visitors can chat directly with Penny on the page — no sign-up, no download. Penny can answer pricing and availability questions, guide visitors around the page, highlight specific features, and capture lead information automatically. This demonstrates exactly what the embedded chat widget would look like on a client's storage facility website.
 
 ---
 
-### 🛡️ Demo Security — Strict Anti-Abuse Protections
+## Three Documents Attached
 
-We've implemented multiple layers of security to ensure the demo cannot be abused or exploited:
+Elijah and I built three companion documents to support your pricing and commercialisation decisions. All three work together:
 
-| Protection | What it does |
+### 1. `penny_pricing_proposal.md` — Full Written Rationale
+The long-form document. Covers why hybrid pricing is the right model, the full cost stack per interaction (Retell, ElevenLabs, Twilio, OpenAI), four subscription tiers with margin analysis, setup fee packages, Year 1 revenue projections, and a risk register. Written so you can read it top-to-bottom or jump to the section you need.
+
+### 2. `Penny-Pricing-Model-2026-05-18.xlsx` — Interactive Math Model
+The numbers behind every figure in the proposal. You can open the Assumptions tab and change any input (e.g. exchange rate, usage volume, number of clients) and watch all tiers recalculate live. Includes scenario modelling for light, typical, and heavy usage clients.
+
+### 3. `Penny-Pricing-Deck-2026-05-18.pptx` — Boardroom Slide Deck
+A 14-slide version of the proposal for presenting to partners, investors, or the wider team. Same structure as the written doc — less text, more visual.
+
+> **Note on the markdown file:** The `.md` file is also useful if you're working with Claude (AI) directly. Claude can read and reason over it, which means you can paste it into a conversation and ask questions like *"what should we charge a dental clinic with 300 calls per month?"* or *"stress-test the Growth tier margins"* — and get grounded answers from the actual numbers.
+
+---
+
+## What the Pricing Is Based On
+
+Both Penny agents running in production today use the same underlying platform stack:
+
+| What Penny does | Platform |
 |---|---|
-| **Cloudflare Turnstile CAPTCHA** | Every demo request requires passing an invisible bot check before any call can be placed. This blocks automated scripts, bots, and spam. |
-| **Phone rate limit (1 per day)** | Each phone number can only receive one demo call within a 24-hour window. This is enforced at the database level and cannot be bypassed. |
-| **IP rate limit (5 per hour)** | No single network address can trigger more than 5 demo requests per hour, preventing rapid-fire abuse from one location. |
-| **Global daily cap (50 calls/day)** | There is a hard limit on total demo calls per day across all users. This protects us from unexpected surges and keeps costs predictable. |
-| **International phone validation** | Phone numbers are validated against each country's official numbering rules. Only mobile and landline numbers are accepted — premium, toll, and VOIP numbers are blocked. |
-| **Server-side input validation** | All submitted data (name, email, phone, scenario) is validated again on the server before anything is processed. Even if someone bypasses the form, the backend will reject bad data. |
-| **Secrets fully protected** | All API keys, database credentials, and security tokens are stored in environment variables and excluded from the code repository. |
+| **Voice calls** (inbound + outbound) | Retell AI + Twilio |
+| **Chat widget** (on-website) | ElevenLabs Conversational AI |
+| **AI brain** | OpenAI GPT-4o / 4o-mini |
+| **Workflows** (booking, email, CRM) | n8n |
+| **Database** | Supabase |
+| **Web dashboard** | Next.js |
+
+Because all four providers bill per-minute (not per-seat), the pricing model is built around that reality — a base monthly fee with included usage, then per-minute overage above the cap. The docs walk through the exact cost-per-minute for both voice and chat so you can validate the margin math yourself.
 
 ---
 
-### 🎨 Visual & UI Updates
+## What's Coming Next
 
-- **International phone support** — Users can now select their country from a searchable dropdown with flags and dial codes (70+ countries supported). We are no longer limited to Australian numbers only.
-- **Email collection** — The demo form now collects user email addresses alongside name and phone.
-- **Demo Terms & Conditions** — A professional, collapsible terms section is built into the form. Users must accept before they can proceed. Terms include recording disclosure, data handling, retention policy, and user rights.
-- **Marketing consent** — An optional checkbox allows users to opt in to hearing from the Penny team. This is separated from the mandatory terms to stay compliant with privacy regulations.
-- **"Talk to us" section** — The former "Get in Touch" section has been renamed and broadened to accept general enquiries, custom setup requests, data/privacy requests, and any other questions.
-- **Various UI polish** — Updated hero section, refined animations, layout improvements across the page.
+The current landing page is a strong foundation. In the next development session, we plan to enhance the UI and add additional elements — including further polish to the demo experience, additional sections, and refinements based on feedback. Nothing blocking — just flagging so you know the page will continue to evolve.
 
----
+On the content side, the page has two video placeholder sections ready whenever footage is available:
+- *"See Penny in action at a real facility"*
+- *"Watch a live demo"*
 
-## ⏳ Waiting On
-
-### 🎬 Video Content
-The landing page has two video placeholder sections ready to go:
-1. *"See Penny in action at a real facility"* — A walkthrough of Penny handling a storage enquiry
-2. *"Watch a live demo"* — A real-time recording of Penny handling a waitlist call
-
-**These are ready to receive the final video files as soon as they're available.** We just need the media to drop them in.
+We just need the video files to drop them in.
 
 ---
 
-## 📋 Decision Needed
+## One Open Decision
 
-### 📧 "Talk to us" — Notification Email
-
-The "Talk to us" contact form is fully functional. When a visitor submits an enquiry, the data is captured and sent to our automation system (n8n webhook) for processing.
-
-**We need a decision from the team: which email address should receive these notifications?**
-
-Options to consider:
-- A shared team inbox (e.g. `team@...` or `hello@...`)
-- Brooklyn's direct email
-- A dedicated Penny inbox (e.g. `penny@brooklynbradley.com`)
-
-Once confirmed, we'll connect the notification and the contact form will be fully end-to-end operational.
+The "Talk to us" contact form on the page is fully working — it captures enquiries and sends them through for processing. We still need a confirmed email address to route those notifications to. Happy to connect that as soon as you confirm the right inbox.
 
 ---
 
-Let me know if you have any questions, want a walkthrough of the demo, or need any adjustments!
+Let me know if you'd like a walkthrough of the demo or have questions on any of the pricing numbers. Happy to jump on a call.
 
 Best,
 Elijah
+*(built together with Claude)*

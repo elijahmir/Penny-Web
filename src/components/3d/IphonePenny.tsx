@@ -494,10 +494,13 @@ function drawLiveIsland(
   y: (value: number) => number,
   frame: CallScreenFrame
 ) {
-  const width = frame.phase === 'ringing' ? 72 : 66
-  const height = 21
-  const left = x(164 - width / 2)
-  const topValue = 36
+  const centerXValue = 164
+  const width = frame.phase === 'ringing' ? 88 : 82
+  const height = 24
+  const leftValue = centerXValue - width / 2
+  const rightValue = centerXValue + width / 2
+  const left = x(leftValue)
+  const topValue = 31
   const centerYValue = topValue + height / 2
   const top = y(topValue)
   const radius = x(height / 2)
@@ -517,7 +520,7 @@ function drawLiveIsland(
   ctx.stroke()
 
   ctx.beginPath()
-  ctx.arc(x(frame.phase === 'ringing' ? 142 : 145), y(centerYValue), x(1.8 + pulse * 0.22), 0, Math.PI * 2)
+  ctx.arc(x(leftValue + 17), y(centerYValue), x(2.1 + pulse * 0.25), 0, Math.PI * 2)
   ctx.fillStyle = frame.phase === 'ringing'
     ? `rgba(52, 199, 89, ${0.48 + pulse * 0.32})`
     : 'rgba(201, 129, 96, 0.86)'
@@ -527,17 +530,18 @@ function drawLiveIsland(
   ctx.lineWidth = x(1.1)
   ctx.lineCap = 'round'
   ctx.beginPath()
-  ctx.moveTo(x(128), y(centerYValue))
-  ctx.lineTo(x(128), y(centerYValue + (frame.phase === 'ringing' ? 3.1 : 1.2)))
-  ctx.moveTo(x(200), y(centerYValue))
-  ctx.lineTo(x(200), y(centerYValue - (frame.phase === 'ringing' ? 3.1 : 1.2)))
+  ctx.moveTo(x(leftValue + 8), y(centerYValue))
+  ctx.lineTo(x(leftValue + 8), y(centerYValue + (frame.phase === 'ringing' ? 3.5 : 1.4)))
+  ctx.moveTo(x(rightValue - 8), y(centerYValue))
+  ctx.lineTo(x(rightValue - 8), y(centerYValue - (frame.phase === 'ringing' ? 3.5 : 1.4)))
   ctx.stroke()
 
-  const lens = ctx.createRadialGradient(x(187), y(centerYValue), x(1), x(187), y(centerYValue), x(5.2))
+  const lensXValue = rightValue - 18
+  const lens = ctx.createRadialGradient(x(lensXValue), y(centerYValue), x(1), x(lensXValue), y(centerYValue), x(5.8))
   lens.addColorStop(0, 'rgba(18, 35, 78, 0.9)')
   lens.addColorStop(1, 'rgba(0, 0, 0, 0)')
   ctx.beginPath()
-  ctx.arc(x(187), y(centerYValue), x(4.7), 0, Math.PI * 2)
+  ctx.arc(x(lensXValue), y(centerYValue), x(5.2), 0, Math.PI * 2)
   ctx.fillStyle = lens
   ctx.fill()
 }

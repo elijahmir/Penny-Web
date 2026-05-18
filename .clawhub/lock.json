@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "skills": {
+    "elevenlabs-agents": {
+      "version": "1.0.0",
+      "installedAt": 1779108341041
+    }
+  }
+}
