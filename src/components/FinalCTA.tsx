@@ -9,9 +9,9 @@ export function FinalCTA() {
       className="section relative overflow-hidden"
       style={{ background: "var(--ink)" }}
     >
-      {/* Ambient glow */}
+      {/* Ambient glow - breathing */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full pointer-events-none animate-breathe"
         style={{
           background:
             "radial-gradient(ellipse, rgba(201,129,96,0.08) 0%, transparent 70%)",
@@ -45,7 +45,10 @@ export function FinalCTA() {
               style={{
                 background: "var(--copper)",
                 color: "var(--bg)",
+                transition: "transform 0.25s var(--ease-out-expo)",
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             >
               Hear Penny in action
             </a>
@@ -56,6 +59,15 @@ export function FinalCTA() {
                 background: "transparent",
                 color: "var(--bg)",
                 border: "1px solid rgba(247,247,242,0.2)",
+                transition: "transform 0.25s var(--ease-out-expo), border-color 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.borderColor = "rgba(201,129,96,0.5)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.borderColor = "rgba(247,247,242,0.2)";
               }}
             >
               Talk to us

@@ -7,7 +7,9 @@ import { PennyLogo } from "./PennyLogo";
 
 const links = [
   { label: "Features", href: "#features" },
+  { label: "Integrations", href: "#integrations" },
   { label: "Use cases", href: "#use-cases" },
+  { label: "Dashboard", href: "#crm" },
   { label: "How it works", href: "#how-it-works" },
   { label: "FAQ", href: "#faq" },
 ];

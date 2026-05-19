@@ -2,6 +2,8 @@ import { PennyLogo } from "./PennyLogo";
 
 const footerLinks = [
   { label: "Features", href: "#features" },
+  { label: "Integrations", href: "#integrations" },
+  { label: "Dashboard", href: "#crm" },
   { label: "Use cases", href: "#use-cases" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },

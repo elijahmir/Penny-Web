@@ -5,7 +5,7 @@
  */
 
 export interface CountryCode {
-  /** ISO 3166-1 alpha-2 code — used by libphonenumber-js */
+  /** ISO 3166-1 alpha-2 code - used by libphonenumber-js */
   iso: string;
   /** International dial code (e.g. "+61") */
   dial: string;
@@ -121,5 +121,5 @@ export function findCountryByIso(iso: string): CountryCode | undefined {
   return ALL_COUNTRIES.find((c) => c.iso === iso) ?? PRIORITY_COUNTRIES.find((c) => c.iso === iso);
 }
 
-/** Default country — Australia */
+/** Default country - Australia */
 export const DEFAULT_COUNTRY_ISO = "AU";

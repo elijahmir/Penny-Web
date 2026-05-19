@@ -59,9 +59,17 @@ export function FAQ() {
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
-              <div key={i}>
+              <div
+                key={i}
+                style={{
+                  borderLeft: isOpen ? "2px solid var(--copper)" : "2px solid transparent",
+                  transition: "border-color 0.3s ease",
+                  paddingLeft: "12px",
+                  marginLeft: "-12px",
+                }}
+              >
                 <button
-                  className="w-full flex items-center justify-between py-5 text-left group cursor-pointer"
+                  className="w-full flex items-center justify-between py-5 text-left group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--copper)] focus-visible:ring-offset-2 rounded-sm"
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${i}`}
@@ -90,7 +98,7 @@ export function FAQ() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
                       className="overflow-hidden"
                     >
                       <p className="text-body pb-5 text-[15px]">{faq.a}</p>

@@ -47,7 +47,7 @@ function ChatInner({
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Register page-control tools
-  // action_site is the PRIMARY unified tool — the ElevenLabs agent calls this
+  // action_site is the PRIMARY unified tool - the ElevenLabs agent calls this
   useConversationClientTool("action_site", clientTools.action_site);
   // Legacy named tools kept for backward compat
   useConversationClientTool("scroll_to_section", clientTools.scroll_to_section);
@@ -63,7 +63,7 @@ function ChatInner({
 
   // Reset when ElevenLabs disconnects while a session was active.
   // setState is deferred via queueMicrotask so it runs after the effect body
-  // completes — this satisfies the react-hooks/set-state-in-effect rule.
+  // completes - this satisfies the react-hooks/set-state-in-effect rule.
   useEffect(() => {
     if (status !== "disconnected") return;
     queueMicrotask(() => {
@@ -104,7 +104,7 @@ function ChatInner({
 
     addUserMessage(text);
     setInput("");
-    setIsTyping(true);   // show dots — cleared by parent when AI replies
+    setIsTyping(true);   // show dots - cleared by parent when AI replies
     sendUserMessage(text);
     setExchangeCount((n) => n + 1);
   }
@@ -198,7 +198,7 @@ function ChatInner({
         </div>
       </div>
 
-      {/* Messages — scroll is contained here, not page-level */}
+      {/* Messages - scroll is contained here, not page-level */}
       <div className={styles.messages} ref={messagesContainerRef}>
         {messages.length === 0 && (
           <div className={styles.emptyHint}>
@@ -302,7 +302,7 @@ export function PennyChatDemo({ onSwitchToPhone }: { onSwitchToPhone?: () => voi
     setIsTyping(false);
   }, []);
 
-  // onMessage fires when ElevenLabs sends agent_response — clears typing here in parent
+  // onMessage fires when ElevenLabs sends agent_response - clears typing here in parent
   const handleMessage = useCallback(
     (props: { message: string; source: "user" | "ai"; role?: string }) => {
       if (props.source === "ai" || props.role === "agent") {
@@ -310,7 +310,7 @@ export function PennyChatDemo({ onSwitchToPhone }: { onSwitchToPhone?: () => voi
           ...prev,
           { id: `p-${Date.now()}-${Math.random()}`, role: "penny", text: props.message },
         ]);
-        setIsTyping(false); // same state that ChatInner reads — now actually cleared
+        setIsTyping(false); // same state that ChatInner reads - now actually cleared
       }
     },
     []

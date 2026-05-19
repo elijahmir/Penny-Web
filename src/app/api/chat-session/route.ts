@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
   if (insertError) {
     console.error("[chat-session] Supabase insert error:", insertError);
-    // Non-fatal — continue anyway
+    // Non-fatal - continue anyway
   }
 
   return NextResponse.json({ signedUrl, agentId: AGENT_ID });

@@ -33,11 +33,12 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 16, scale: 0.96 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
+    scale: 1,
+    transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
   },
 };
 
@@ -68,13 +69,18 @@ export function HowItWorks() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
         >
-          {/* Connecting line (desktop only) */}
-          <div
+          {/* Connecting line (desktop only) - draw-on animation */}
+          <motion.div
             className="hidden md:block absolute top-8 left-[16.7%] right-[16.7%] h-px"
             style={{
               background:
-                "linear-gradient(to right, transparent, var(--border) 15%, var(--border) 85%, transparent)",
+                "linear-gradient(to right, transparent, var(--border) 15%, var(--copper) 50%, var(--border) 85%, transparent)",
+              transformOrigin: "left center",
             }}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           />
 
           {steps.map((step) => {
@@ -86,20 +92,31 @@ export function HowItWorks() {
                 variants={itemVariants}
               >
                 <div className="flex items-center justify-center gap-3 mb-5">
-                  <span
+                  <motion.span
                     className="text-xs font-bold w-8 h-8 rounded-full flex items-center justify-center relative z-10"
                     style={{
                       background: "var(--ink)",
                       color: "var(--bg)",
                     }}
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1], delay: 0.1 }}
                   >
                     {step.number}
-                  </span>
-                  <Icon
-                    size={22}
-                    strokeWidth={1.8}
-                    style={{ color: "var(--copper)" }}
-                  />
+                  </motion.span>
+                  <motion.div
+                    initial={{ scale: 0, rotate: -20 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1], delay: 0.15 }}
+                  >
+                    <Icon
+                      size={22}
+                      strokeWidth={1.8}
+                      style={{ color: "var(--copper)" }}
+                    />
+                  </motion.div>
                 </div>
                 <h3
                   className="text-lg font-semibold mb-2"

@@ -18,17 +18,18 @@ export function Hero() {
     >
       {/* Ambient copper glow */}
       <div
-        className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full pointer-events-none"
+        className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full pointer-events-none animate-breathe"
         style={{
           background:
             "radial-gradient(circle, rgba(201,129,96,0.06) 0%, transparent 70%)",
         }}
       />
       <div
-        className="absolute bottom-[-30%] left-[-15%] w-[500px] h-[500px] rounded-full pointer-events-none"
+        className="absolute bottom-[-30%] left-[-15%] w-[500px] h-[500px] rounded-full pointer-events-none animate-breathe"
         style={{
           background:
             "radial-gradient(circle, rgba(201,129,96,0.04) 0%, transparent 70%)",
+          animationDelay: "2s",
         }}
       />
 
@@ -75,6 +76,15 @@ export function Hero() {
               Penny is the phone teammate built for self-storage. She picks
               up when you can&apos;t, calls the waitlist the moment a unit
               opens, and books the tour while you&apos;re closing the gate.
+              <motion.span
+                className="inline-block align-middle ml-0.5"
+                style={{ width: 2, height: 18, background: "var(--copper)", borderRadius: 1 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2 }}
+              >
+                <span style={{ display: "block", width: "100%", height: "100%", animation: "blink-cursor 1s step-end infinite" }} />
+              </motion.span>
             </motion.p>
 
             <motion.div
@@ -83,10 +93,22 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.65 }}
             >
-              <a href="#try-penny" className="btn btn-primary text-base px-7 py-4">
+              <a
+                href="#try-penny"
+                className="btn btn-primary text-base px-7 py-4"
+                style={{ transition: "transform 0.25s var(--ease-out-expo)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.04)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              >
                 Hear Penny in 2 minutes
               </a>
-              <a href="#features" className="btn btn-secondary text-base px-7 py-4">
+              <a
+                href="#features"
+                className="btn btn-secondary text-base px-7 py-4"
+                style={{ transition: "transform 0.25s var(--ease-out-expo)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.04)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              >
                 See how she works
               </a>
             </motion.div>

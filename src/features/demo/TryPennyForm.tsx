@@ -15,7 +15,7 @@ type FormState = "idle" | "submitting" | "success" | "error";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
 
-const DEMO_TERMS_BODY = `Penny AI — Demo Terms & Conditions
+const DEMO_TERMS_BODY = `Penny AI - Demo Terms & Conditions
 
 Demo Nature
 This is a demonstration of Penny AI's voice assistant capabilities. The call simulates real-world storage service scenarios and does not constitute a service agreement, quote, or binding commitment.

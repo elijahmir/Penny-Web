@@ -21,7 +21,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 type FormState = "idle" | "submitting" | "success" | "error";
 
-const WEBHOOK_URL = "https://hup.app.n8n.cloud/webhook/penny-contact-web";
+const WEBHOOK_URL = "https://hup.app.n8n.cloud/webhook/penny-chat-lead";
 
 export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
@@ -47,11 +47,12 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: data.name,
-          phone: data.phone,
           email: data.email,
-          message: data.message,
-          source: "penny_landing",
-          submitted_at: new Date().toISOString(),
+          phone: data.phone,
+          interest: data.message,
+          notes: `Phone: ${data.phone}`,
+          facility_name: "",
+          source: "penny-contact-form",
         }),
       });
 
@@ -228,7 +229,7 @@ export function ContactForm() {
                     <textarea
                       id="contact-message"
                       rows={4}
-                      placeholder="Questions, custom setup, data requests — tell us what you need."
+                      placeholder="Questions, custom setup, data requests - tell us what you need."
                       {...register("message")}
                       className="w-full px-4 py-3 rounded-lg border text-sm outline-none resize-none"
                       style={{

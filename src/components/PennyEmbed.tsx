@@ -34,7 +34,7 @@ const BUSINESS_POINTS = [
   {
     icon: Building2,
     title: "Built for storage facilities",
-    desc: "Penny knows your industry. Unit types, move-in processes, insurance, access codes — she handles it all without needing configuration.",
+    desc: "Penny knows your industry. Unit types, move-in processes, insurance, access codes - she handles it all without needing configuration.",
   },
   {
     icon: Zap,

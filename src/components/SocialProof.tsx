@@ -5,7 +5,7 @@ import { Marquee } from "./Marquee";
 
 export function SocialProof() {
   return (
-    <section className="relative">
+    <section className="relative" aria-label="Social proof">
       {/* Top border accent */}
       <div
         className="h-px w-full"

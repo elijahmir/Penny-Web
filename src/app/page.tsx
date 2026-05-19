@@ -7,7 +7,9 @@ import { Hero } from "@/components/Hero";
 import { SocialProof } from "@/components/SocialProof";
 import { VideoPlaceholder } from "@/components/VideoPlaceholder";
 import { FeatureGrid } from "@/components/FeatureGrid";
+import { Integrations } from "@/components/Integrations";
 import { UseCases } from "@/components/UseCases";
+import { CRMShowcase } from "@/components/CRMShowcase";
 import { HowItWorks } from "@/components/HowItWorks";
 import { PennyOptions } from "@/components/PennyOptions";
 import { PennyEmbed } from "@/components/PennyEmbed";
@@ -46,7 +48,9 @@ export default function Home() {
               description="A short walkthrough showing how Penny handles a storage enquiry - from the first ring to the booked tour."
             />
             <FeatureGrid />
+            <Integrations />
             <UseCases />
+            <CRMShowcase />
             <HowItWorks />
             <PennyOptions onSelectTab={handleSelectTab} />
             <PennyEmbed />

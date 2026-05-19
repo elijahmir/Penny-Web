@@ -69,7 +69,7 @@ export function highlightFeature(featureName: string): string {
 
   return found
     ? `Highlighted feature: ${featureName}`
-    : `Feature "${featureName}" not found — scrolled to features section`;
+    : `Feature "${featureName}" not found - scrolled to features section`;
 }
 
 // ─── action_site unified dispatcher ──────────────────────────────────────────
@@ -119,11 +119,11 @@ export function actionSite(params: ActionSiteParams): string {
  * Parameter types use Record<string, unknown> to satisfy ClientTool generic.
  */
 export const clientTools = {
-  // ── Primary unified tool — matches `action_site` on the ElevenLabs agent ──
+  // -- Primary unified tool - matches `action_site` on the ElevenLabs agent --
   action_site: (params: Record<string, unknown>) =>
     actionSite(params as unknown as ActionSiteParams),
 
-  // ── Legacy named tools (backward compat — agent may call these directly) ──
+  // -- Legacy named tools (backward compat - agent may call these directly) --
   scroll_to_section: (params: Record<string, unknown>) =>
     scrollToSection(params.section as string),
 

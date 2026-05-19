@@ -7,11 +7,11 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { Model as Iphone } from './IphonePenny'
 
-// Scene — user's original dialled-in values
+// Scene - user's original dialled-in values
 const CAMERA_Z = 1.8
 const CAMERA_FOV = 53
 
-/* ─── Canvas aspect is fixed (≈ 0.962) — see CanvasContainer comment.
+/* -- Canvas aspect is fixed (≈ 0.962) - see CanvasContainer comment.
        Adjust both numbers together to keep the ratio. The container max size
        on desktop is W × H below; on narrower viewports it scales down while
        preserving the same aspect. */

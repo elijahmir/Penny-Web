@@ -65,10 +65,15 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: (custom: number) => ({
+    opacity: 0,
+    y: 20,
+    x: custom % 2 === 0 ? -12 : 12,
+  }),
   visible: {
     opacity: 1,
     y: 0,
+    x: 0,
     transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
@@ -102,7 +107,7 @@ export function FeatureGrid() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
         >
-          {features.map((feature) => {
+          {features.map((feature, featureIndex) => {
             const Icon = feature.icon;
             const isFeatured = feature.span === "featured";
             return (
@@ -110,9 +115,10 @@ export function FeatureGrid() {
                 key={feature.title}
                 className={`group cursor-default interactive-card ${
                   isFeatured
-                    ? "card-featured lg:col-span-2"
+                    ? "card-featured lg:col-span-2 shimmer-on-hover"
                     : "card"
                 }`}
+                custom={featureIndex}
                 variants={itemVariants}
                 style={
                   isFeatured
@@ -125,7 +131,12 @@ export function FeatureGrid() {
                     className={`shrink-0 rounded-lg flex items-center justify-center ${
                       isFeatured ? "w-12 h-12" : "w-10 h-10"
                     }`}
-                    style={{ background: "rgba(201,129,96,0.1)" }}
+                    style={{
+                      background: "rgba(201,129,96,0.1)",
+                      transition: "transform 0.3s var(--ease-spring)",
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.12) rotate(-8deg)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1) rotate(0deg)")}
                   >
                     <Icon
                       size={isFeatured ? 22 : 20}
