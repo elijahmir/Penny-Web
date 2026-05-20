@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef, useCallback, useMemo } from "react";
+import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, CheckCircle, AlertCircle, Loader2, ArrowRight, RotateCcw, ChevronDown, Mail, Shield } from "lucide-react";
 import { scenarios, type ScenarioId } from "./scenarios";
 import { getOrderedCountries, findCountryByIso, DEFAULT_COUNTRY_ISO, type CountryCode } from "./country-codes";
 import { Turnstile } from "@marsidev/react-turnstile";
+import { detectCountryIso } from "./geo-detect";
 import styles from "./TryPennyForm.module.css";
 
 const EMIL_EASE_OUT = [0.23, 1, 0.32, 1] as const;
@@ -61,6 +62,16 @@ export function TryPennyForm() {
 
   const countries = useMemo(() => getOrderedCountries(), []);
   const selectedCountry = useMemo(() => findCountryByIso(countryIso), [countryIso]);
+
+  // Auto-detect country on mount (Vercel geo cookie → timezone → AU fallback)
+  useEffect(() => {
+    const detected = detectCountryIso();
+    if (detected !== DEFAULT_COUNTRY_ISO || countryIso === DEFAULT_COUNTRY_ISO) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sync with browser geo (cookie/timezone)
+      setCountryIso(detected);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredCountries = useMemo(() => {
     if (!countrySearch.trim()) return countries;

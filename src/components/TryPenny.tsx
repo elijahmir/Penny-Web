@@ -41,7 +41,7 @@ export function TryPenny({ defaultTab = "phone" }: Props) {
 
   return (
     <section
-      className="section"
+      className="section-xl"
       id="try-penny"
       style={{ background: "var(--bg-elevated)" }}
       aria-labelledby="try-penny-heading"

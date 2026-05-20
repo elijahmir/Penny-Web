@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { PennyLogo } from "./PennyLogo";
@@ -16,13 +16,31 @@ const links = [
 
 export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 40);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b"
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: "rgba(247, 247, 242, 0.85)",
-        borderColor: "var(--border)",
+        background: scrolled
+          ? "oklch(0.97 0.005 55 / 0.92)"
+          : "oklch(0.97 0.005 55 / 0.6)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: scrolled
+          ? "1px solid var(--border)"
+          : "1px solid transparent",
+        transition:
+          "background 0.35s var(--ease-out-quart), border-color 0.35s var(--ease-out-quart)",
       }}
       role="navigation"
       aria-label="Main navigation"

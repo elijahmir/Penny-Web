@@ -84,7 +84,7 @@ const itemVariants = {
 export function UseCases() {
   return (
     <section
-      className="section"
+      className="section-lg"
       id="use-cases"
       style={{ background: "var(--bg-elevated)" }}
     >
@@ -123,7 +123,7 @@ export function UseCases() {
               <span
                 className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
                 style={{
-                  background: "rgba(201,129,96,0.1)",
+                  background: "oklch(0.65 0.11 55 / 0.1)",
                   color: "var(--copper-deep)",
                 }}
               >

@@ -342,7 +342,7 @@ export function CRMShowcase() {
 
   return (
     <section
-      className="section"
+      className="section-xl"
       id="crm"
       style={{ background: "var(--bg)" }}
       aria-labelledby="crm-heading"

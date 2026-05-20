@@ -65,7 +65,7 @@ type Props = {
 export function PennyOptions({ onSelectTab }: Props) {
   return (
     <section
-      className="section"
+      className="section-lg"
       id="penny-options"
       style={{ background: "var(--bg)" }}
       aria-labelledby="penny-options-heading"
@@ -109,11 +109,12 @@ export function PennyOptions({ onSelectTab }: Props) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gridTemplateColumns: "1fr",
             gap: "28px",
-            maxWidth: 900,
+            maxWidth: 960,
             margin: "0 auto",
           }}
+          className="md:!grid-cols-[7fr_5fr]"
         >
           {options.map((opt, i) => {
             const Icon = opt.icon;
@@ -129,9 +130,9 @@ export function PennyOptions({ onSelectTab }: Props) {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  background: opt.highlight ? "#242321" : "var(--bg-elevated)",
-                  border: `1px solid ${opt.highlight ? "transparent" : "rgba(201,129,96,0.15)"}`,
-                  padding: "36px",
+                  background: opt.highlight ? "var(--charcoal)" : "var(--bg-elevated)",
+                  border: `1px solid ${opt.highlight ? "transparent" : "oklch(0.65 0.11 55 / 0.15)"}`,
+                  padding: opt.highlight ? "40px" : "36px",
                   position: "relative",
                   overflow: "hidden",
                 }}
@@ -190,7 +191,7 @@ export function PennyOptions({ onSelectTab }: Props) {
                   style={{
                     fontSize: "22px",
                     fontWeight: 500,
-                    color: opt.highlight ? "#F7F7F2" : "#242321",
+                    color: opt.highlight ? "var(--bg)" : "var(--ink)",
                     margin: "0 0 4px 0",
                     lineHeight: 1.2,
                   }}
@@ -212,7 +213,7 @@ export function PennyOptions({ onSelectTab }: Props) {
                   style={{
                     fontSize: "15px",
                     lineHeight: 1.7,
-                    color: opt.highlight ? "rgba(247,247,242,0.85)" : "var(--ink-muted)",
+                    color: opt.highlight ? "oklch(0.97 0.005 55 / 0.85)" : "var(--ink-muted)",
                     margin: "0 0 24px 0",
                   }}
                 >
@@ -241,7 +242,7 @@ export function PennyOptions({ onSelectTab }: Props) {
                           alignItems: "center",
                           gap: "10px",
                           fontSize: "14px",
-                          color: opt.highlight ? "rgba(247,247,242,0.88)" : "var(--ink-muted)",
+                          color: opt.highlight ? "oklch(0.97 0.005 55 / 0.88)" : "var(--ink-muted)",
                         }}
                       >
                         <FIcon size={14} color={opt.badgeColor} strokeWidth={2} style={{ flexShrink: 0 }} />
@@ -277,7 +278,7 @@ export function PennyOptions({ onSelectTab }: Props) {
                   <span
                     style={{
                       fontSize: "12px",
-                      color: opt.highlight ? "rgba(247,247,242,0.65)" : "var(--ink-muted)",
+                      color: opt.highlight ? "oklch(0.97 0.005 55 / 0.65)" : "var(--ink-muted)",
                     }}
                   >
                     {opt.stat.label}
@@ -307,8 +308,8 @@ export function PennyOptions({ onSelectTab }: Props) {
                     fontSize: "14px",
                     letterSpacing: "0.04em",
                     textDecoration: "none",
-                    background: opt.highlight ? opt.badgeColor : "#242321",
-                    color: "#F7F7F2",
+                    background: opt.highlight ? opt.badgeColor : "var(--charcoal)",
+                    color: "var(--bg)",
                     transition: "opacity 0.2s, transform 0.15s",
                     cursor: "pointer",
                   }}

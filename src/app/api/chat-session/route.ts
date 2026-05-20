@@ -2,11 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { createHash } from "crypto";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 const AGENT_ID = process.env.NEXT_PUBLIC_ELEVENLABS_CHAT_AGENT_ID!;
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY!;
 const DAILY_SESSION_CAP = parseInt(process.env.CHAT_DAILY_SESSION_CAP ?? "5", 10);
@@ -24,6 +19,12 @@ function getIp(req: NextRequest): string {
 }
 
 export async function POST(req: NextRequest) {
+  // Create Supabase client per-request (not module-level singleton)
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   // --- Rate limit check ---
   const ip = getIp(req);
   const ipHash = hashIp(ip);

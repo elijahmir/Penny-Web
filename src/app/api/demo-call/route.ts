@@ -1,11 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SCENARIO_AGENT_MAP, type ScenarioId } from "@/features/demo/scenarios";
+import { type ScenarioId } from "@/features/demo/scenarios";
 import { validatePhone } from "@/features/demo/phone";
 import { rateLimit, dailyQuotaCheck } from "@/features/demo/rate-limit";
 import { createServerClient } from "@/features/demo/supabase-server";
+import { createHash } from "crypto";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
+
+/**
+ * Maps scenario IDs to Retell conversation-flow agent IDs.
+ * Defined server-side only to prevent exposure in the client bundle.
+ */
+const SCENARIO_AGENT_MAP: Record<ScenarioId, string> = {
+  storage_waitlist: "agent_a4e0448bb0232314e6d17e1dfc",
+  inquiry_callback: "agent_79b67eb596c896e2a9057f07da",
+  tour_booking: "agent_8a0a182305f6f00f450f699e69",
+  move_in_welcome: "agent_5555f2584d26c4950956ea8eef",
+  overdue_payment: "agent_a7c3ca7429e8c425f447e62e32",
+};
 
 const RETELL_API_KEY = process.env.RETELL_API_KEY!;
 const FROM_NUMBER = process.env.RETELL_DEMO_FROM_NUMBER || "+61485017999";
@@ -174,7 +187,7 @@ export async function POST(request: NextRequest) {
         phone: phoneResult.e164,
         scenario: scenario as ScenarioId,
         status: "initiating",
-        ip_address: ip,
+        ip_address: createHash("sha256").update(ip + "penny-demo-salt").digest("hex").slice(0, 32),
         marketing_consent: Boolean(marketingConsent),
       })
       .select("id")

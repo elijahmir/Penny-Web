@@ -13,11 +13,10 @@ const INTRO_HOLD_MS = 2200; // time to show full intro before exit
 
 export function PennyIntro({ onComplete, forceShow = false }: Props) {
   const prefersReducedMotion = useReducedMotion();
-  const [show, setShow] = useState(() => {
-    if (forceShow) return true;
-    if (typeof window === "undefined") return false;
-    return !sessionStorage.getItem(SESSION_KEY);
-  });
+
+  // Start `false` so SSR and client agree (no hydration mismatch).
+  // The mount useEffect decides whether to show the intro or skip straight to content.
+  const [show, setShow] = useState(false);
 
   const onCompleteRef = useRef(onComplete);
   useEffect(() => {
@@ -28,15 +27,23 @@ export function PennyIntro({ onComplete, forceShow = false }: Props) {
     onCompleteRef.current?.();
   }, []);
 
-  // Persist session flag + handle already-seen path
+  // On mount: first visit → show intro; returning visit → skip to content
   useEffect(() => {
-    if (show && !forceShow) {
-      sessionStorage.setItem(SESSION_KEY, "1");
+    if (forceShow) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sync with sessionStorage (external system)
+      setShow(true);
+      return;
     }
-    if (!show) {
+    if (sessionStorage.getItem(SESSION_KEY)) {
+      // Already seen this session — skip intro, go straight to content
       handleComplete();
+    } else {
+      // First visit — show the intro
+      sessionStorage.setItem(SESSION_KEY, "1");
+      setShow(true);
     }
-  }, [show, forceShow, handleComplete]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Auto-dismiss after hold duration
   useEffect(() => {

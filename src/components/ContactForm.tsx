@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 const schema = z.object({
   name: z.string().min(2, "Name required.").max(60),
@@ -21,11 +22,13 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 type FormState = "idle" | "submitting" | "success" | "error";
 
-const WEBHOOK_URL = "https://hup.app.n8n.cloud/webhook/penny-chat-lead";
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const captchaRef = useRef<TurnstileInstance>(null);
+  const captchaTokenRef = useRef<string>("");
 
   const {
     register,
@@ -42,32 +45,46 @@ export function ContactForm() {
     setErrorMsg("");
 
     try {
-      const res = await fetch(WEBHOOK_URL, {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: data.name,
           email: data.email,
           phone: data.phone,
-          interest: data.message,
-          notes: `Phone: ${data.phone}`,
-          facility_name: "",
-          source: "penny-contact-form",
+          message: data.message,
+          captchaToken: captchaTokenRef.current,
         }),
       });
 
-      if (res.ok) {
+      const result = await res.json();
+
+      if (res.ok && result.success) {
         setState("success");
         reset();
+        captchaRef.current?.reset();
+        captchaTokenRef.current = "";
       } else {
         setState("error");
-        setErrorMsg("Something went wrong. Try again or email us directly.");
+        setErrorMsg(
+          result.error ||
+            "Something went wrong. Try again or email us directly."
+        );
+        captchaRef.current?.reset();
+        captchaTokenRef.current = "";
       }
     } catch {
       setState("error");
       setErrorMsg("Connection error. Please check your internet.");
     }
   };
+
+  // Stable form submit handler — avoids calling handleSubmit(onSubmit) during render
+  const formSubmitHandler = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => handleSubmit(onSubmit)(e),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [handleSubmit]
+  );
 
   return (
     <section
@@ -86,8 +103,9 @@ export function ContactForm() {
           >
             <h2 className="text-h2 mb-3">Talk to us</h2>
             <p className="text-body">
-              Questions about Penny, need a custom setup, or have a data request?{" "}
-              We&apos;re here to help and respond within one business day.
+              Questions about Penny, need a custom setup, or have a data
+              request? We&apos;re here to help and respond within one business
+              day.
             </p>
           </motion.div>
 
@@ -96,7 +114,11 @@ export function ContactForm() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            transition={{
+              duration: 0.5,
+              ease: [0.16, 1, 0.3, 1],
+              delay: 0.1,
+            }}
           >
             <AnimatePresence mode="wait">
               {state === "success" ? (
@@ -107,8 +129,15 @@ export function ContactForm() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <CheckCircle2 size={40} className="mx-auto mb-4" style={{ color: "var(--success)" }} />
-                  <p className="text-xl font-semibold mb-2" style={{ color: "var(--ink)" }}>
+                  <CheckCircle2
+                    size={40}
+                    className="mx-auto mb-4"
+                    style={{ color: "var(--success)" }}
+                  />
+                  <p
+                    className="text-xl font-semibold mb-2"
+                    style={{ color: "var(--ink)" }}
+                  >
                     Message sent!
                   </p>
                   <p className="text-body text-sm">
@@ -118,7 +147,7 @@ export function ContactForm() {
               ) : (
                 <motion.form
                   key="form"
-                  onSubmit={handleSubmit(onSubmit)}
+                  onSubmit={formSubmitHandler}
                   className="space-y-5"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -152,13 +181,19 @@ export function ContactForm() {
                       {...register("name")}
                       className="w-full px-4 py-3 rounded-lg border text-sm outline-none"
                       style={{
-                        borderColor: errors.name ? "var(--danger)" : "var(--border)",
+                        borderColor: errors.name
+                          ? "var(--danger)"
+                          : "var(--border)",
                         color: "var(--ink)",
                         background: "var(--bg)",
                       }}
                     />
                     {errors.name && (
-                      <p className="text-xs mt-1" style={{ color: "var(--danger)" }} role="alert">
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--danger)" }}
+                        role="alert"
+                      >
                         {errors.name.message}
                       </p>
                     )}
@@ -179,13 +214,19 @@ export function ContactForm() {
                       {...register("phone")}
                       className="w-full px-4 py-3 rounded-lg border text-sm outline-none"
                       style={{
-                        borderColor: errors.phone ? "var(--danger)" : "var(--border)",
+                        borderColor: errors.phone
+                          ? "var(--danger)"
+                          : "var(--border)",
                         color: "var(--ink)",
                         background: "var(--bg)",
                       }}
                     />
                     {errors.phone && (
-                      <p className="text-xs mt-1" style={{ color: "var(--danger)" }} role="alert">
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--danger)" }}
+                        role="alert"
+                      >
                         {errors.phone.message}
                       </p>
                     )}
@@ -206,13 +247,19 @@ export function ContactForm() {
                       {...register("email")}
                       className="w-full px-4 py-3 rounded-lg border text-sm outline-none"
                       style={{
-                        borderColor: errors.email ? "var(--danger)" : "var(--border)",
+                        borderColor: errors.email
+                          ? "var(--danger)"
+                          : "var(--border)",
                         color: "var(--ink)",
                         background: "var(--bg)",
                       }}
                     />
                     {errors.email && (
-                      <p className="text-xs mt-1" style={{ color: "var(--danger)" }} role="alert">
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--danger)" }}
+                        role="alert"
+                      >
                         {errors.email.message}
                       </p>
                     )}
@@ -233,24 +280,52 @@ export function ContactForm() {
                       {...register("message")}
                       className="w-full px-4 py-3 rounded-lg border text-sm outline-none resize-none"
                       style={{
-                        borderColor: errors.message ? "var(--danger)" : "var(--border)",
+                        borderColor: errors.message
+                          ? "var(--danger)"
+                          : "var(--border)",
                         color: "var(--ink)",
                         background: "var(--bg)",
                       }}
                     />
                     {errors.message && (
-                      <p className="text-xs mt-1" style={{ color: "var(--danger)" }} role="alert">
+                      <p
+                        className="text-xs mt-1"
+                        style={{ color: "var(--danger)" }}
+                        role="alert"
+                      >
                         {errors.message.message}
                       </p>
                     )}
                   </div>
+
+                  {/* Turnstile CAPTCHA */}
+                  {TURNSTILE_SITE_KEY && (
+                    <div className="flex justify-center">
+                      <Turnstile
+                        ref={captchaRef}
+                        siteKey={TURNSTILE_SITE_KEY}
+                        onSuccess={(token) => {
+                          captchaTokenRef.current = token;
+                        }}
+                        onError={() => {
+                          captchaTokenRef.current = "";
+                        }}
+                        onExpire={() => {
+                          captchaTokenRef.current = "";
+                          captchaRef.current?.reset();
+                        }}
+                        options={{ theme: "light", size: "normal" }}
+                      />
+                    </div>
+                  )}
 
                   <button
                     type="submit"
                     className="btn btn-primary w-full py-4 text-base"
                     disabled={!isValid || state === "submitting"}
                     style={{
-                      opacity: isValid && state !== "submitting" ? 1 : 0.5,
+                      opacity:
+                        isValid && state !== "submitting" ? 1 : 0.5,
                     }}
                   >
                     {state === "submitting" ? (

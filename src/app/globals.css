@@ -2,33 +2,30 @@
 
 /* ─────────────────────────────────────────────
    Penny Design System - CSS Custom Properties
+   Font: Outfit  |  Colors: OKLCH  |  Register: Brand
    ───────────────────────────────────────────── */
 
 :root {
-  --bg: #F7F7F2;
-  --bg-elevated: #FFFFFF;
-  --ink: #242321;
-  --ink-muted: #5A5853;
-  --ink-subtle: #8B8985;
-  --ink-light: var(--ink-muted); /* alias - use ink-muted or ink-subtle instead */
-  --charcoal: #242321;           /* dark card / header background */
-  --bg-dark: #1C1A18;            /* deeper dark, used in code blocks and chat header */
-  --copper: #C98160;
-  --copper-deep: #A8654A;
-  --border: #E8E6E0;
-  --success: #3D8C5B;
-  --danger: #B84A3D;
+  /* Colors — OKLCH with warm tint toward copper hue (≈55°) */
+  --bg: oklch(0.97 0.005 55);
+  --bg-elevated: oklch(0.993 0.003 55);
+  --ink: oklch(0.2 0.01 55);
+  --ink-muted: oklch(0.42 0.01 55);
+  --ink-subtle: oklch(0.58 0.008 55);
+  --ink-light: var(--ink-muted);
+  --charcoal: oklch(0.2 0.01 55);
+  --bg-dark: oklch(0.16 0.01 55);
+  --copper: oklch(0.65 0.11 55);
+  --copper-deep: oklch(0.55 0.1 50);
+  --border: oklch(0.92 0.005 55);
+  --success: oklch(0.52 0.1 155);
+  --danger: oklch(0.52 0.12 25);
 
-  /* Shadows - copper-tinted for warmth */
-  --shadow-sm: 0 1px 2px rgba(36, 35, 33, 0.03), 0 8px 24px rgba(36, 35, 33, 0.05);
-  --shadow-md: 0 2px 4px rgba(36, 35, 33, 0.04), 0 12px 32px rgba(36, 35, 33, 0.07);
-  --shadow-copper: 0 4px 24px rgba(201, 129, 96, 0.12);
-  --shadow-lg: 0 4px 6px rgba(36, 35, 33, 0.05), 0 20px 48px rgba(36, 35, 33, 0.1);
-
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --glass-blur: 16px;
+  /* Shadows — copper-tinted for warmth */
+  --shadow-sm: 0 1px 2px oklch(0.2 0.01 55 / 0.03), 0 8px 24px oklch(0.2 0.01 55 / 0.05);
+  --shadow-md: 0 2px 4px oklch(0.2 0.01 55 / 0.04), 0 12px 32px oklch(0.2 0.01 55 / 0.07);
+  --shadow-copper: 0 4px 24px oklch(0.65 0.11 55 / 0.12);
+  --shadow-lg: 0 4px 6px oklch(0.2 0.01 55 / 0.05), 0 20px 48px oklch(0.2 0.01 55 / 0.1);
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -53,7 +50,7 @@
   --color-border: var(--border);
   --color-success: var(--success);
   --color-danger: var(--danger);
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-outfit);
 }
 
 /* ─────────────────────────────────────────────
@@ -63,7 +60,7 @@
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -74,7 +71,7 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 50;
   opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
@@ -82,7 +79,7 @@ body::after {
 }
 
 /* ─────────────────────────────────────────────
-   Typography
+   Typography (Outfit)
    ───────────────────────────────────────────── */
 
 .text-display {
@@ -122,6 +119,7 @@ body::after {
   font-weight: 400;
   line-height: 1.6;
   color: var(--ink-muted);
+  max-width: 65ch;
 }
 
 .text-caption {
@@ -182,7 +180,7 @@ body::after {
 
 .btn-secondary:hover {
   border-color: var(--ink-subtle);
-  background: rgba(0, 0, 0, 0.02);
+  background: oklch(0.2 0.01 55 / 0.02);
 }
 
 .btn-ghost {
@@ -209,7 +207,7 @@ body::after {
 }
 
 .card:hover {
-  border-color: rgba(201, 129, 96, 0.3);
+  border-color: oklch(0.65 0.11 55 / 0.3);
   box-shadow: var(--shadow-copper);
 }
 
@@ -222,7 +220,7 @@ body::after {
 /* Featured/larger card variant */
 .card-featured {
   background: var(--bg-elevated);
-  border: 1px solid rgba(201, 129, 96, 0.15);
+  border: 1px solid oklch(0.65 0.11 55 / 0.15);
   border-radius: var(--radius-card);
   padding: 32px;
   box-shadow: var(--shadow-sm);
@@ -230,7 +228,7 @@ body::after {
 }
 
 .card-featured:hover {
-  border-color: rgba(201, 129, 96, 0.4);
+  border-color: oklch(0.65 0.11 55 / 0.4);
   box-shadow: var(--shadow-copper);
   transform: translateY(-2px);
 }
@@ -242,16 +240,32 @@ body::after {
 }
 
 /* ─────────────────────────────────────────────
-   Section Layout
+   Section Layout — Varied Rhythm
    ───────────────────────────────────────────── */
 
 .section {
-  padding: 64px 24px;
+  padding: 96px 24px;
+}
+
+.section-lg {
+  padding: 120px 24px;
+}
+
+.section-xl {
+  padding: 140px 24px;
 }
 
 @media (min-width: 768px) {
   .section {
-    padding: 96px 24px;
+    padding: 120px 40px;
+  }
+
+  .section-lg {
+    padding: 160px 40px;
+  }
+
+  .section-xl {
+    padding: 200px 40px;
   }
 }
 
@@ -350,8 +364,8 @@ html {
 }
 
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 129, 96, 0.25); }
-  50% { box-shadow: 0 0 0 12px rgba(201, 129, 96, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.65 0.11 55 / 0.25); }
+  50% { box-shadow: 0 0 0 12px oklch(0.65 0.11 55 / 0); }
 }
 
 @keyframes breathe {
@@ -377,35 +391,12 @@ html {
 .interactive-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-copper);
-  border-color: rgba(201, 129, 96, 0.3);
+  border-color: oklch(0.65 0.11 55 / 0.3);
 }
 
 /* ─────────────────────────────────────────────
-   Premium Utility Classes
+   Utility Classes
    ───────────────────────────────────────────── */
-
-/* Glassmorphism card */
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-card);
-  transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo);
-}
-
-.glass-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Gradient text (copper → copper-deep) */
-.text-gradient {
-  background: linear-gradient(135deg, var(--copper), var(--copper-deep));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 /* Gradient border via pseudo-element */
 .gradient-border {
@@ -419,12 +410,12 @@ html {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(201, 129, 96, 0.3), rgba(201, 129, 96, 0.05));
+  background: linear-gradient(135deg, oklch(0.65 0.11 55 / 0.3), oklch(0.65 0.11 55 / 0.05));
   z-index: -1;
   pointer-events: none;
 }
 
-/* Shimmer overlay on hover */
+/* Shimmer overlay on hover — purposeful, interaction-triggered */
 .shimmer-on-hover {
   position: relative;
   overflow: hidden;
@@ -434,7 +425,7 @@ html {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.15) 50%, transparent 60%);
+  background: linear-gradient(105deg, transparent 40%, oklch(1 0 0 / 0.15) 50%, transparent 60%);
   transform: translateX(-100%);
   transition: none;
   pointer-events: none;

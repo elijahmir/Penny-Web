@@ -44,7 +44,7 @@ const itemVariants = {
 
 export function HowItWorks() {
   return (
-    <section className="section" id="how-it-works">
+    <section className="section-lg" id="how-it-works">
       <div className="section-inner px-6">
         <motion.div
           className="text-center mb-12 md:mb-16"

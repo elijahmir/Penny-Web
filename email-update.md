@@ -1,47 +1,43 @@
-# Penny - Landing Page Update (19 May 2026)
+# Penny — Landing Page Update (20 May 2026)
 
 Hi Brad,
 
-Quick update on the landing page. We've pushed a round of UI/UX enhancements to make everything client-facing ready.
+Follow-up from yesterday's push. We've improved the layout, fixed some visual bugs, and added a smart feature for the phone field.
 
 ---
 
-## What's New
+## What Changed
 
-### Integrations Section
-New section showing the third-party platforms Penny connects with, using official brand logos:
-- **Google Workspace** - Sheets, Calendar, Gmail
-- **Microsoft 365** - Teams, Outlook, SharePoint
-- **DocuSign** - marked as a paid add-on
+### Layout Fixes — Feature Grid ("Built for the way a storage facility actually runs")
+The bento-style feature grid had a layout bug where cards would occasionally misalign or leave gaps. We've rebuilt the grid logic so each card now sits in a fixed, predictable position. No more shifting or blank spaces on any screen size.
 
-If a prospect uses tools we haven't listed, the page encourages them to talk to us about connecting their stack.
+### Spacing & Breathing Room
+The overall page felt too compressed — sections were stacking too tightly. We've increased the vertical spacing between all major sections so the page feels more spacious, premium, and easier to read.
 
-### Penny Dashboard Section
-A new interactive dashboard mockup demonstrating Penny's built-in CRM. The stat cards (calls handled, tours booked, overdue collected) animate with a count-up effect when the section scrolls into view. Includes a live activity feed and mini chart to show the depth of reporting available.
+### Smart Country Detection for the Phone Field
+When someone opens the "Try Penny" form, the country dial code now auto-selects based on where they're browsing from:
+- **On Vercel (production):** Uses IP-based geolocation — extremely accurate
+- **Locally / elsewhere:** Falls back to the visitor's device timezone
+- **Default:** Australia (Penny's home market)
 
-### Micro-Interactions & Motion
-Every section now has subtle, purposeful animations:
-- Breathing ambient glows in the hero and final call-to-action
-- Button hover effects with scale transitions
-- Animated connecting lines in the "How It Works" steps
-- FAQ items highlight with a copper accent when expanded
+This means an American visitor sees +1, a UK visitor sees +44, and a Kiwi sees +64 — automatically, no clicking through dropdown lists.
 
-### "Talk to Us" Contact Form - Now Fully Connected
-The contact form is now fully configured and live:
-- All enquiries are **logged to Supabase** for tracking and follow-up
-- Users receive an **automatic confirmation email** acknowledging their submission
-- Source is tagged as `penny-contact-form` for easy filtering in the CRM
+### Intro Animation — Session-Aware
+The "Penny" splash intro now only plays once per browser session. If you refresh the page or navigate back, it skips straight to the content — no repeated animation on every load.
 
-### Code Quality
-- Typography standardised across the entire codebase
-- Full build and lint passing with zero errors and zero warnings
-- Accessibility improvements including keyboard focus indicators and screen reader labels
+### Contact Form — Reliability Improvement
+Fixed an internal code quality issue with how the contact form handles submissions. No visible change for users, but it's now more resilient and passes all modern code quality checks.
+
+### Technical Health
+- Full production build passing — zero errors
+- All code quality checks passing — zero warnings
+- Upgraded to the latest framework conventions (proxy routing)
 
 ---
 
 ## What's Next
 
-The two video placeholder sections are still ready whenever footage is available:
+Same as before — the two video placeholder sections are ready whenever footage is available:
 - *"See Penny in action at a real facility"*
 - *"Watch a live demo"*
 
@@ -49,7 +45,7 @@ We just need the video files to drop them in.
 
 ---
 
-Let me know if you'd like a walkthrough or have any feedback on the new sections.
+Let me know if you'd like a walkthrough or have any feedback.
 
 Best,
 Elijah
